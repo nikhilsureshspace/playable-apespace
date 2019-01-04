@@ -5,14 +5,8 @@
 <style>
     body {
         margin: 0;
-        background: #ff8500;
+        background: #000;
     }
-
-    /*canvas {*/
-    /*width: 100%;*/
-    /*height: 100%*/
-    /*background: #ff8500;*/
-    /*}*/
 
     #startButton {
         position: absolute;
@@ -32,10 +26,8 @@
         width: 100%;
         height: 100%;
 
-        background: #11e8bb; /* Old browsers */
-        background: -webkit-linear-gradient(top, #ff8500 0%, #ff3000 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom, #ff8500 0%, #ff3000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#11e8bb', endColorstr='#8200c9',GradientType=0 ); !* IE6-9 *!*/
+        background: #000; /* Old browsers */
+        background: linear-gradient(to bottom, #fff 0%, #000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     }
 </style>
 
@@ -57,27 +49,6 @@
         <button id="startButton">PLAY</button>
     </div>
 </div>
-
-<script>
-    var startButton = document.getElementById('startButton');
-    startButton.addEventListener('click', startGame);
-
-    function startGame() {
-        if (sound == null) {
-            var sound = new THREE.Audio(listener);
-
-            var audioLoader = new THREE.AudioLoader();
-            audioLoader.load('music.mp3', function (buffer) {
-                sound.setBuffer(buffer);
-                sound.setLoop(true);
-                sound.setVolume(0.6);
-                sound.play();
-            });
-        }
-    }
-
-</script>
-
 
 <script>
 
@@ -117,13 +88,13 @@
     var groupTiming;
     var groupCount = 0;
 
-    function init() {
+    function createBoilerplate() {
         container = document.getElementById('container');
 
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 120);
         camera.position.z = -10;
         camera.position.y = 3;
-        
+
         lookAt = new THREE.Vector3(0, 0, 0);
 
         camera.rotation.y = 180 * Math.PI / 180;
@@ -143,7 +114,7 @@
         renderer = new THREE.WebGLRenderer({antialias: false, alpha: true});
         renderer.setPixelRatio((window.devicePixelRatio) ? window.devicePixelRatio : 1);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0.0);
+        renderer.setClearColor(0xff8500, 0.0);
 
         console.log("clear color is " + renderer.getClearColor());
 
@@ -151,13 +122,16 @@
 
         document.addEventListener("mousemove", mouseMoveHandler, false);
 
-        var ambientLight = new THREE.AmbientLight(0xffeeff, 1);
-        scene.add(ambientLight);
+
+        clock = new THREE.Clock();
 
         stats = new Stats();
         container.appendChild(stats.dom);
+    }
 
-        clock = new THREE.Clock();
+    function createSceneStuff() {
+        var ambientLight = new THREE.AmbientLight(0xffeeff, 1);
+        scene.add(ambientLight);
 
         var ground = new THREE.CircleGeometry(3, 32);
         var groundMaterial = new THREE.MeshBasicMaterial({color: 0xff8500});
@@ -174,13 +148,6 @@
         groundCircle2.position.y -= 0.7;
         groundCircle2.rotation.x = groundCircle.rotation.x;
 
-        // var plane = new THREE.CircleGeometry( 3, 32 );
-        // var groundPlane = new THREE.Mesh( plane, groundMaterial );
-        // scene.add(groundPlane);
-
-        // var gridHelper = new THREE.GridHelper( 10, 20 );
-        // scene.add( gridHelper );
-
         particle = new THREE.Object3D();
         scene.add(particle);
 
@@ -189,6 +156,16 @@
         particle2 = new THREE.Object3D();
         addParticles(particle2, 25, 30, 0.25, 300);
         scene.add(particle2);
+    }
+
+    function init() {
+
+        var startButton = document.getElementById('startButton');
+        startButton.addEventListener('click', startGame);
+        
+        createBoilerplate();
+
+        createSceneStuff();
 
         // renderer.setClearColor( 0xff8500 ); //default
 
@@ -243,11 +220,26 @@
         elapsed = clock.getElapsedTime();
     }
 
+    function startGame() {
+        if (sound == null) 
+        {
+            sound = new THREE.Audio(listener);
+
+            var audioLoader = new THREE.AudioLoader();
+            audioLoader.load('music.mp3', function (buffer) {
+                sound.setBuffer(buffer);
+                sound.setLoop(true);
+                sound.setVolume(0.6);
+                sound.play();
+            });
+        }
+    }
     
     var timeSinceLastCircle = 2;
     var shorten = 0.1;
     var currentTime = 0;
 
+    
     function gameLogic() 
     {
         if (currentTime > timeSinceLastCircle) 
