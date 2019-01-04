@@ -162,7 +162,7 @@
 
         var startButton = document.getElementById('startButton');
         startButton.addEventListener('click', startGame);
-        
+
         createBoilerplate();
 
         createSceneStuff();
@@ -174,9 +174,9 @@
         loadStormtrooper();
 
         textStuff();
-        
+
         // fontStuff("HELLO!", 0x26ffc1);
-        
+
         makeCircle();
     }
 
@@ -221,8 +221,7 @@
     }
 
     function startGame() {
-        if (sound == null) 
-        {
+        if (sound == null) {
             sound = new THREE.Audio(listener);
 
             var audioLoader = new THREE.AudioLoader();
@@ -234,28 +233,30 @@
             });
         }
     }
-    
+
     var timeSinceLastCircle = 2;
     var shorten = 0.1;
     var currentTime = 0;
+    var minTimeBetweenCircles = 1.0;
 
-    
-    function gameLogic() 
-    {
-        if (currentTime > timeSinceLastCircle) 
-        {
+
+    function gameLogic() {
+        if (currentTime > timeSinceLastCircle) {
             makeCircle();
-            
+
             currentTime = 0;
+
             timeSinceLastCircle -= shorten;
-        }
-        else
-        {
+            
+            if (timeSinceLastCircle < minTimeBetweenCircles) {
+                timeSinceLastCircle = minTimeBetweenCircles;
+            }
+        } else {
             currentTime += delta;
         }
     }
-    
-    
+
+
     function animate() {
 
         requestAnimationFrame(animate);
@@ -321,9 +322,9 @@
         // }
 
         gameLogic();
-        
+
         animateCircles();
-        
+
         stats.update();
     }
 
@@ -344,7 +345,7 @@
     }
 
     var startPosition;
-    
+
     function makeCircle() {
         var textureLoader = new THREE.TextureLoader();
         var mapB = textureLoader.load("./dot.png");
@@ -352,47 +353,44 @@
         var materialB = new THREE.SpriteMaterial({map: mapB, color: 0xffffff, fog: true});
 
         startPosition = new THREE.Vector3(0, 12, 0);
-        
+
         var sprite = new THREE.Sprite(materialB);
         sprite.position.set(startPosition.x, startPosition.y, startPosition.z);
         scene.add(sprite);
-        
-        if (group == null)
-        {
+
+        if (group == null) {
             group = [sprite];
             groupTiming = [elapsed];
         }
 
         group[groupCount] = sprite;
         groupTiming[groupCount] = elapsed;
-        
+
         groupCount++;
     }
 
     var direction;
     var percent;
-    
-    function animateCircles() 
-    {
+
+    function animateCircles() {
         //  direction = new THREE.Vector3(0, 0, 0);
         // camera.getWorldDirection(direction);
-        
+
         var targetPosition = new THREE.Vector3(0, -10, 0).add(camera.position);
-        
+
         var lengthOfSlide = 3.0;
-        
+
         var startScale = 1.0;
         var endScale = 0.5;
-        
-        for (var i = 0; i < groupCount; i++)
-        {
+
+        for (var i = 0; i < groupCount; i++) {
             var g = group[i];
-            
-            var top = elapsed - groupTiming[i];            
+
+            var top = elapsed - groupTiming[i];
             var bottom = lengthOfSlide;
-            
+
             percent = Math.max(Math.min(top / bottom, 1.0), 0.0);
-            
+
             g.position.x = startPosition.x + (targetPosition.x - startPosition.x) * percent;
             g.position.y = startPosition.y + (targetPosition.y - startPosition.y) * percent;
             g.position.z = startPosition.z + (targetPosition.z - startPosition.z) * percent;
@@ -402,7 +400,6 @@
             g.scale.z = startScale + (endScale - startScale) * percent;
         }
     }
-
 
 
     function fontStuff(strings, colors) {
