@@ -87,6 +87,8 @@
     var group;
     var groupTiming;
     var groupCount = 0;
+    
+    var isGameStarted = false;
 
     function createBoilerplate() {
         container = document.getElementById('container');
@@ -220,17 +222,23 @@
         elapsed = clock.getElapsedTime();
     }
 
-    function startGame() {
-        if (sound == null) {
-            sound = new THREE.Audio(listener);
+    function loadMusic() {
+        sound = new THREE.Audio(listener);
 
-            var audioLoader = new THREE.AudioLoader();
-            audioLoader.load('music.mp3', function (buffer) {
-                sound.setBuffer(buffer);
-                sound.setLoop(true);
-                sound.setVolume(0.6);
-                sound.play();
-            });
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load('music.mp3', function (buffer) {
+            sound.setBuffer(buffer);
+            sound.setLoop(true);
+            sound.setVolume(0.6);
+            sound.play();
+        });
+    }
+
+    function startGame() {
+        if (!isGameStarted) {
+            loadMusic();
+
+            isGameStarted = true;
         }
     }
 
