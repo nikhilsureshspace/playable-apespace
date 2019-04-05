@@ -1,0 +1,31 @@
+{
+
+"images": [
+    "fastlane-upgrade-sprites.png"
+],
+
+"framerate": 20,
+"frames": [
+    [0, 0, 27, 55, 0, 0, 0],
+    [27, 0, 55, 55, 0, 0, 0],
+    [82, 0, 57, 76, 0, 0, 0],
+    [139, 0, 67, 76, 0, 0, 0],
+    [0, 76, 215, 283, 0, 0, 0],
+    [0, 359, 215, 283, 0, 0, 0]
+],
+
+"animations": {
+    "door": { "frames": [0] },
+    "front_glow": { "frames": [1] },
+    "gun": { "frames": [2] },
+    "gun_damaged": { "frames": [3] },
+    "car_damage": { "frames": [4] },
+    "car": { "frames": [5] }
+},
+
+"texturepacker": [
+        "SmartUpdateHash: $TexturePacker:SmartUpdate:4ac2aba3996845cd0fe9124926c78606:dbfed40847c2684bb501892db7b1e604:b5868bc2dd1b7e51881e8775bad9d09b$",
+        "Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
+]
+
+}
