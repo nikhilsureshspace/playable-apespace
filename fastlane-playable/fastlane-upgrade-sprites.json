@@ -20,12 +20,12 @@
     [1, 1657, 206, 237, 0, -14, -16],
     [453, 1627, 140, 216, 0, -39, -33],
     [595, 1627, 27, 55, 0, 0, 0],
-    [595, 1773, 100, 113, 0, -76, -74],
-    [697, 1773, 74, 74, 0, -1, 0],
-    [773, 1773, 74, 73, 0, -1, -1],
-    [849, 1773, 67, 76, 0, 0, 0],
-    [918, 1773, 57, 76, 0, 0, 0],
-    [977, 1773, 55, 55, 0, 0, 0],
+    [595, 1773, 74, 74, 0, -1, 0],
+    [671, 1773, 74, 73, 0, -1, -1],
+    [747, 1773, 67, 76, 0, 0, 0],
+    [816, 1773, 65, 73, 0, 0, 0],
+    [883, 1773, 57, 76, 0, 0, 0],
+    [942, 1773, 55, 55, 0, 0, 0],
     [1027, 1, 210, 239, 0, -13, -17],
     [1027, 242, 228, 237, 0, -5, -18],
     [1027, 481, 220, 237, 0, -7, -19],
@@ -44,17 +44,17 @@
     "SAG_Fastlane-Logo_Master": { "frames": [9] },
     "car": { "frames": [12] },
     "door": { "frames": [13] },
-    "health_pack": { "frames": [14] },
-    "P_Boost": { "frames": [15] },
-    "P_DoubleFire": { "frames": [16] },
-    "gun_damaged": { "frames": [17] },
+    "P_Boost": { "frames": [14] },
+    "P_DoubleFire": { "frames": [15] },
+    "gun_damaged": { "frames": [16] },
+    "health": { "frames": [17] },
     "gun": { "frames": [18] },
     "front_glow": { "frames": [19] },
     "car_damage": { "frames": [24] }
 },
 
 "texturepacker": [
-        "SmartUpdateHash: $TexturePacker:SmartUpdate:48de6d0c636fc6c727ea430299411794:6bb57ccedb13c3cadfd5e246c9b215ee:b5868bc2dd1b7e51881e8775bad9d09b$",
+        "SmartUpdateHash: $TexturePacker:SmartUpdate:d01893069fc014dc2508291530c10b98:a4cc21a32d086154e737bc4f92d46538:b5868bc2dd1b7e51881e8775bad9d09b$",
         "Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
 ]
 
