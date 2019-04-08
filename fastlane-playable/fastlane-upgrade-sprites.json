@@ -6,25 +6,35 @@
 
 "framerate": 20,
 "frames": [
-    [0, 0, 27, 55, 0, 0, 0],
-    [27, 0, 55, 55, 0, 0, 0],
-    [82, 0, 57, 76, 0, 0, 0],
-    [139, 0, 67, 76, 0, 0, 0],
-    [0, 76, 215, 283, 0, 0, 0],
-    [0, 359, 215, 283, 0, 0, 0]
+    [1, 1, 1024, 1024, 0, 0, 0],
+    [1, 1027, 226, 512, 0, -15, 0],
+    [1, 1541, 417, 478, 0, -27, -34],
+    [229, 1027, 225, 512, 0, -15, 0],
+    [420, 1541, 452, 472, 0, -12, -38],
+    [456, 1027, 218, 512, 0, -23, 0],
+    [676, 1027, 330, 468, 0, -95, -16],
+    [874, 1497, 140, 216, 0, -39, -33],
+    [874, 1715, 136, 216, 0, -39, -33],
+    [874, 1933, 67, 76, 0, 0, 0],
+    [943, 1933, 57, 76, 0, 0, 0],
+    [1002, 1933, 55, 55, 0, 0, 0],
+    [1002, 1990, 27, 55, 0, 0, 0]
 ],
 
 "animations": {
-    "door": { "frames": [0] },
-    "front_glow": { "frames": [1] },
-    "gun": { "frames": [2] },
-    "gun_damaged": { "frames": [3] },
-    "car_damage": { "frames": [4] },
-    "car": { "frames": [5] }
+    "P_Road": { "frames": [0] },
+    "nitro": { "frames": [1, 5, 3] },
+    "explosion": { "frames": [6, 4, 2] },
+    "car": { "frames": [7] },
+    "car_damage": { "frames": [8] },
+    "gun_damaged": { "frames": [9] },
+    "gun": { "frames": [10] },
+    "front_glow": { "frames": [11] },
+    "door": { "frames": [12] }
 },
 
 "texturepacker": [
-        "SmartUpdateHash: $TexturePacker:SmartUpdate:4ac2aba3996845cd0fe9124926c78606:dbfed40847c2684bb501892db7b1e604:b5868bc2dd1b7e51881e8775bad9d09b$",
+        "SmartUpdateHash: $TexturePacker:SmartUpdate:1e0cede61969728568ff4491b351209d:9bb506919afbb5b0a6c8232e52cd2dc2:b5868bc2dd1b7e51881e8775bad9d09b$",
         "Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
 ]
 

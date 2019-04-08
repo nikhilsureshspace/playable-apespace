@@ -54,37 +54,50 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 <script>
 
 
-	var spritesheetData = {
+	var spritesheetData = 
+        {
 
-		"images": [
-			"fastlane-upgrade-sprites.png"
-		],
+            "images": [
+                "fastlane-upgrade-sprites.png"
+            ],
 
-		"framerate": 20,
-		"frames": [
-			[0, 0, 27, 55, 0, 0, 0],
-			[27, 0, 55, 55, 0, 0, 0],
-			[82, 0, 57, 76, 0, 0, 0],
-			[139, 0, 67, 76, 0, 0, 0],
-			[0, 76, 215, 283, 0, 0, 0],
-			[0, 359, 215, 283, 0, 0, 0]
-		],
+            "framerate": 10,
+            "frames": [
+                [1, 1, 1024, 1024, 0, 0, 0],
+                [1, 1027, 226, 512, 0, -15, 0],
+                [1, 1541, 417, 478, 0, -27, -34],
+                [229, 1027, 225, 512, 0, -15, 0],
+                [420, 1541, 452, 472, 0, -12, -38],
+                [456, 1027, 218, 512, 0, -23, 0],
+                [676, 1027, 330, 468, 0, -95, -16],
+                [874, 1497, 140, 216, 0, -39, -33],
+                [874, 1715, 136, 216, 0, -39, -33],
+                [874, 1933, 67, 76, 0, 0, 0],
+                [943, 1933, 57, 76, 0, 0, 0],
+                [1002, 1933, 55, 55, 0, 0, 0],
+                [1002, 1990, 27, 55, 0, 0, 0]
+            ],
 
-		"animations": {
-			"door": { "frames": [0] },
-			"front_glow": { "frames": [1] },
-			"gun": { "frames": [2] },
-			"gun_damaged": { "frames": [3] },
-			"car_damage": { "frames": [4] },
-			"car": { "frames": [5] }
-		},
+            "animations": {
+                "P_Road": { "frames": [0] },
+                "nitro": { "frames": [1, 5, 3] },
+                "explosion": { "frames": [6, 4, 2] },
+                "car": { "frames": [7] },
+                "car_damage": { "frames": [8] },
+                "gun_damaged": { "frames": [9] },
+                "gun": { "frames": [10] },
+                "front_glow": { "frames": [11] },
+                "door": { "frames": [12] }
+            },
 
-		"texturepacker": [
-				"SmartUpdateHash: $TexturePacker:SmartUpdate:4ac2aba3996845cd0fe9124926c78606:dbfed40847c2684bb501892db7b1e604:b5868bc2dd1b7e51881e8775bad9d09b$",
-				"Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
-		]
+            "texturepacker": [
+                "SmartUpdateHash: $TexturePacker:SmartUpdate:1e0cede61969728568ff4491b351209d:9bb506919afbb5b0a6c8232e52cd2dc2:b5868bc2dd1b7e51881e8775bad9d09b$",
+                "Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
+            ]
 
-	};
+        }
+
+    ;
 
 	var spriteSheet;
 
@@ -95,11 +108,11 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var posX, posY;
 
     var text;
-    var screenResolutionMultiplier = 0.5;
+    var screenResolutionMultiplier = 1;
     var rez;
     
     var screenX, screenY;
-    var delta;
+    var delta, timeSinceStart = 0;
     
     // scale a value based on the screen resolution
     function r(value)
@@ -114,6 +127,17 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     function sy(value)
     {
         return screenY * value;
+    }
+    
+    function SetScale(image)
+    {
+        image.scaleX = screenResolutionMultiplier / 0.5;
+        image.scaleY = screenResolutionMultiplier / 0.5;
+    }
+    
+    function screenScale()
+    {
+        return 0.5 / screenResolutionMultiplier;
     }
     
     // lerp from one value to another
@@ -133,66 +157,108 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         screenX = document.getElementById("demoCanvas").width  = canvasWidth * screenResolutionMultiplier;
         screenY = document.getElementById("demoCanvas").height = canvasHeight * screenResolutionMultiplier;
 
-        // circle = new createjs.Shape();
-        // circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, r(50));
-        // circle.x = sx(0.5);
-        // circle.y = sy(0.5);
-        // stage.addChild(circle);
-
-        createjs.Ticker.framerate = 60;
+        createjs.Ticker.framerate = 40;
         createjs.Ticker.addEventListener("tick", Update);
 
 		spriteSheet = new createjs.SpriteSheet(spritesheetData);
 
-        // posX = circle.x;
-        // posY = circle.y;
+        BuildRoad();
+
+        BuildCarNitro();
+        BuildCar(sx(0.5), sy(0.2), sy(0.3), sy(0.5));
+        BuildCarDamaged();
+        BuildCarGun();
+        // BuildCarNitro();
+
+        // BuildUpgradeButton(sx(0.5), sy(0.8), sx(0.5), sy(0.25));
+        BuildAllUpgradeButtons();
+        BuildCTAButton();
 
         Text();
 
-        BuildCar(sx(0.5), sy(0.5), sy(0.3), sy(0.5));
-        BuildUpgradeButton(sx(0.5), sy(0.8), sx(0.5), sy(0.25));
-
         stage.update();
-		
 		
 		gameReset();
     }
 	
 	
-	
 	var car;
+    var car_Damaged;
+    var car_Gun;
+    var car_Nitro;
 	
+    var car_Tween;
+    
 	var carSize;
+	var carPosYStart;
     
     function BuildCar(x, y, width, height)
-    {
+    { 
 		car = new createjs.Sprite(spriteSheet, "car");
-	
-        <!-- car = new createjs.Shape(); -->
-        <!-- car.graphics.beginFill("Red").drawRect(0, 0, r(width), r(height)).endFill(); -->
-		
+        SetScale(car);
+        
 		carSize = [ r(width), r(height) ];
 		
 		SetCarPosition(x, y);
-		
+        carPosYStart = y;
+        
         stage.addChild(car);
-		
-		createjs.Tween.get(car, { loop: true })
-		.to({ y: car.y + r(100) }, 4000, createjs.Ease.sineInOut)
-		.to({ y: car.y }, 4000, createjs.Ease.sineInOut)
     }
-	
+    
+    function BuildCarDamaged()
+    {
+        car_Damaged = new createjs.Sprite(spriteSheet, "car_damage");
+        SetScale(car_Damaged);
+        stage.addChild(car_Damaged);
+    }
+
+    function BuildCarGun()
+    {
+        car_Gun = new createjs.Sprite(spriteSheet, "gun");
+        SetScale(car_Gun);
+        stage.addChild(car_Gun);
+    }
+
+    function BuildCarNitro()
+    {
+        car_Nitro = new createjs.Sprite(spriteSheet, "nitro");
+        SetScale(car_Nitro);
+        stage.addChild(car_Nitro);
+    }
+    
 	function SetCarPosition(x = -1, y = -1)
 	{
 		if (x != -1)
 		{        
-			car.x = x - carSize[0];
+			car.x = x - r(200);//carSize[0] * 0.85;
 		}
 		if (y != -1)
 		{        
-			car.y = y - carSize[1];
+			car.y = y - r(250);
 		}
 	}
+	
+	
+	
+	
+	var road;
+    var roadSpeed = 3;
+    var roadSpeed_SLOW = 3;
+    var roadSpeed_MEDIUM = 5;
+    var roadSpeed_FAST = 8;
+    var roadSpeed_INSANE = 12;
+	
+	function BuildRoad()
+    {
+        road = new createjs.Sprite(spriteSheet, "P_Road");
+        road.scaleX = r(1.5 * 1.7);
+        road.scaleY = r(1.5 * 2.0);
+
+        stage.addChild(road);
+    }
+	
+    
+	
     
     function BuildUpgradeButton(x, y, width, height)
     {
@@ -203,6 +269,54 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         stage.addChild(buttonUpgrade);
 		
         buttonUpgrade.addEventListener("click", OnPressUpgrade);
+    }
+    
+    function BuildAllUpgradeButtons()
+    {
+        var x = sx(0.25);
+        var y = sy(0.75);
+        var width = sx(0.6) * screenScale();
+        var height = sy(0.4) * screenScale();
+        
+        x = sx(0.175);
+        var button = new createjs.Shape();
+        button.graphics.beginFill("Red").drawRect(0, 0, r(width), r(height));
+        button.x = x - r(width)/2;
+        button.y = y - r(height)/2;
+        stage.addChild(button);
+        button.addEventListener("click", actionDoUpgradeFixBody);
+        
+        x = sx(0.5);
+        button = new createjs.Shape();
+        button.graphics.beginFill("Red").drawRect(0, 0, r(width), r(height));
+        button.x = x - r(width)/2;
+        button.y = y - r(height)/2;
+        stage.addChild(button);
+        button.addEventListener("click", actionDoUpgrade_ImproveEngine);
+        
+        x = sx(0.825);
+        button = new createjs.Shape();
+        button.graphics.beginFill("Red").drawRect(0, 0, r(width), r(height));
+        button.x = x - r(width)/2;
+        button.y = y - r(height)/2;
+        stage.addChild(button);
+        button.addEventListener("click", actionDoUpgrade_AddGun);
+    }
+    
+    
+    function BuildCTAButton()
+    {
+        var x = sx(0.5);
+        var y = sy(0.925);
+        var width = screenScale() * sx(1.9);
+        var height = screenScale() *sy(0.2);
+        
+        var button = new createjs.Shape();
+        button.graphics.beginFill("Red").drawRect(0, 0, r(width), r(height));
+        button.x = x - r(width)/2;
+        button.y = y - r(height)/2;
+        stage.addChild(button);
+        button.addEventListener("click", OnPressUpgrade);
     }
 
 
@@ -216,40 +330,43 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         stage.addChild(text);
     }
 
-    <!-- function handleClick(event){ -->
-        <!-- // Click happenened -->
-        <!-- //  console.log("handleClick " + event); -->
-    <!-- } -->
-
-    <!-- function handlePress(event) { -->
-        <!-- // A mouse press happened. -->
-        <!-- // Listen for mouse move while the mouse is down: -->
-        <!-- //  console.log("handlePress " + event); -->
-        <!-- //  circle.y = event.stageY; -->
-    <!-- } -->
-    <!-- function handleMove(event) { -->
-        <!-- // Check out the DragAndDrop example in GitHub for more -->
-        <!-- //  console.log("Move " + event); -->
-
-        <!-- posX = event.stageX; -->
-        <!-- posY = event.stageY; -->
-    <!-- } -->
-
-
 
     function Update() 
     {
         delta = createjs.Ticker.interval;
+        timeSinceStart += delta;
         
-        // circle.x = lerp(circle.x, posX, 0.015 * delta);
-        // circle.y = lerp(circle.y, posY, 0.015 * delta);
-
-        <!-- text.x = lerp(text.x, posX, 0.009 * delta); -->
-        <!-- text.y = lerp(text.y, posY, 0.009 * delta); -->
-
+        UpdateRollingRoad();
+        
+        UpdateCarParts();
+        
         stage.update();
     }
+    
+    function UpdateRollingRoad()
+    {
+        road.x = r(100) * Math.sin(timeSinceStart * 0.00035) + sx(-0.3);
+        road.y += r(roadSpeed) * delta;
+        
+        if (road.y > sy(0))
+        {
+            road.y = -sy(0.2);
+        }
+        
+        // road.rotation = r(1) * Math.sin(timeSinceStart * 0.0004);
+    }
 
+    function UpdateCarParts()
+    {
+        car_Damaged.x = car.x;
+        car_Damaged.y = car.y;
+        
+        car_Gun.x = car.x + r(162.65);
+        car_Gun.y = car.y;
+        
+        car_Nitro.x = car.x - r(40);
+        car_Nitro.y = car.y;
+    }
 	
 	var currentStage = 0;
 	
@@ -257,24 +374,21 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	var STAGE_ENGINE = 1;
 	var STAGE_GUN = 2;
 	var STAGE_FINISH = 3;
+    var STAGE_GAMEOVER = 4;
 	
 	function OnPressUpgrade()
 	{
 		actionDoNextUpgrade();
 	}
-
-    function gameReset()
-    {
-        currentStage = 0;
-		text.text = "Hello!";
-    }
     
 	// actions that can be performed. Either 1 button to do any action, or each button does a specific action
 	
 	// this action just does the next upgrade, whatever it is
     function actionDoNextUpgrade()
     {
-		switch (currentStage)
+        var lastStage = currentStage;
+        currentStage++;
+		switch (lastStage)
 		{
 			case STAGE_FIX_BODY:
 				eventOnUpgrade_FixBody();
@@ -288,60 +402,103 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 			case STAGE_FINISH:
 				event_Finish();
 			break;
-			default:
-				gameReset();
-			break;
+            case STAGE_GAMEOVER:
+                gameReset();
+                break;
 		}
-		currentStage++;
     }
 	
     function actionDoUpgradeFixBody()
     {
-        
+        currentStage = 0;
+        actionDoNextUpgrade();
     }
 
     function actionDoUpgrade_ImproveEngine()
     {
-        
+        currentStage = 1;
+        actionDoNextUpgrade();
     }
     
     function actionDoUpgrade_AddGun()
     {
-        
+        currentStage = 2;
+        actionDoNextUpgrade();
+    }
+
+    function gameReset()
+    {
+        currentStage = 0;
+        text.text = "0 DAMAGED CAR";
+
+        SetCarPosition(-1, sy(0.5));
+
+        car_Damaged.visible = true;
+        car_Gun.visible = false;
+        car_Nitro.visible = false;
+
+        roadSpeed = roadSpeed_SLOW;
+
+        createjs.Tween.removeTweens(car);
     }
 	
 	// events that happen after an upgrade
 	
 	function eventOnUpgrade_FixBody()
 	{
-		text.text = "STAGE COMPLETE! FIX BODY";
+		text.text = "1 FIXED BODY";
+
+        car_Damaged.visible = false;
 		
-		<!-- SetCarPosition(-1, sy(0.5))s -->
-		
-		createjs.Tween.get(car, { loop: true })
-		.to({ y: car.y + r(100) }, 1000, createjs.Ease.sineInOut)
-		.to({ y: car.y }, 1000, createjs.Ease.sineInOut)
+		// SetCarPosition(-1, sy(0.5));
+
+        car_Tween = createjs.Tween.get(car, { loop: true })
+        .to({ y: carPosYStart }, 1000, createjs.Ease.sineInOut)
+		.to({ y: carPosYStart + r(100) }, 1000, createjs.Ease.sineInOut);
 	}
 	function eventOnUpgrade_ImproveEngine()
 	{
-		text.text = "IMPROVE ENGINE!";
-		
-		createjs.Tween.get(car, { loop: true })
-		.to({ y: car.y + r(100) }, 800, createjs.Ease.sineInOut)
-		.to({ y: car.y }, 800, createjs.Ease.sineInOut)
+		text.text = "2 IMPROVED ENGINE!";
+
+        // SetCarPosition(-1, sy(0.5));
+        car_Nitro.visible = true;
+
+        car_Tween = createjs.Tween.get(car, { loop: true })
+        .to({ y: carPosYStart }, 800, createjs.Ease.sineInOut)
+		.to({ y: carPosYStart + r(100) }, 800, createjs.Ease.sineInOut);
+        
+        roadSpeed = roadSpeed_MEDIUM;
 	}
 	function eventOnUpgrade_AddGun()
 	{
-		text.text = "ADD GUN! PEWPEWPEW";
+		text.text = "3 ADD GUN! PEWPEWPEW";
 		
-		createjs.Tween.get(car, { loop: true })
-		.to({ y: car.y + r(100) }, 600, createjs.Ease.sineInOut)
-		.to({ y: car.y }, 600, createjs.Ease.sineInOut)
+        car_Gun.visible = true;
+
+        // SetCarPosition(-1, sy(0.5));
+
+        car_Tween = createjs.Tween.get(car, { loop: true })
+        .to({ y: carPosYStart }, 600, createjs.Ease.sineInOut)
+		.to({ y: carPosYStart + r(100) }, 600, createjs.Ease.sineInOut);
+
+        car_Tween = createjs.Tween.get(car, { loop: true })
+            .to({ x: car.x + r(5) }, 35, createjs.Ease.sineInOut)
+            .to({ x: car.x }, 35, createjs.Ease.sineInOut);
+        
+        roadSpeed = roadSpeed_FAST;
 	}
     
 	function event_Finish()
 	{
-		text.text = "FINISH!!!!";
+		text.text = "4 FINISH!!!!";
+		
+        // SetCarPosition(-1, sy(0.5));
+
+        car_Tween = createjs.Tween.get(car, { loop: true })
+            .to({ x: car.x }, 55, createjs.Ease.sineInOut)
+            .to({ x: car.x + r(15) }, 55, createjs.Ease.sineInOut);
+
+        roadSpeed = roadSpeed_INSANE;
 	}
     
 
