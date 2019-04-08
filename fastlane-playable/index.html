@@ -54,55 +54,75 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 <script>
 
 
-	var spritesheetData = 
+	var spritesheetData =
+
         {
 
             "images": [
                 "fastlane-upgrade-sprites.png"
             ],
 
-            "framerate": 10,
+            "framerate": 20,
             "frames": [
                 [1, 1, 1024, 1024, 0, 0, 0],
-                [1, 1027, 226, 512, 0, -15, 0],
-                [1, 1541, 417, 478, 0, -27, -34],
-                [229, 1027, 225, 512, 0, -15, 0],
-                [420, 1541, 452, 472, 0, -12, -38],
-                [456, 1027, 218, 512, 0, -23, 0],
-                [676, 1027, 330, 468, 0, -95, -16],
-                [874, 1497, 140, 216, 0, -39, -33],
-                [874, 1715, 136, 216, 0, -39, -33],
-                [874, 1933, 67, 76, 0, 0, 0],
-                [943, 1933, 57, 76, 0, 0, 0],
-                [1002, 1933, 55, 55, 0, 0, 0],
-                [1002, 1990, 27, 55, 0, 0, 0]
+                [1, 1027, 458, 473, 0, -15, -39],
+                [1, 1502, 457, 468, 0, -28, -13],
+                [460, 1502, 452, 472, 0, -12, -38],
+                [461, 1027, 443, 463, 0, -32, -34],
+                [906, 1027, 330, 468, 0, -95, -16],
+                [914, 1497, 417, 478, 0, -27, -34],
+                [1027, 1, 434, 479, 0, -43, -33],
+                [1027, 482, 415, 478, 0, -35, -34],
+                [1027, 962, 55, 55, 0, 0, 0],
+                [1084, 962, 27, 55, 0, 0, 0],
+                [1238, 962, 410, 478, 0, -30, -34],
+                [1444, 482, 409, 478, 0, -42, -34],
+                [1463, 1, 500, 230, 0, 0, 0],
+                [1463, 233, 190, 213, 0, 0, 0],
+                [1655, 233, 140, 216, 0, -39, -33],
+                [1797, 233, 136, 216, 0, -39, -33],
+                [1935, 233, 67, 76, 0, 0, 0],
+                [1935, 311, 57, 76, 0, 0, 0],
+                [1855, 451, 100, 113, 0, -76, -74],
+                [1855, 566, 74, 74, 0, -1, 0],
+                [1931, 566, 74, 73, 0, -1, -1],
+                [1333, 1442, 226, 512, 0, -15, 0],
+                [1561, 1442, 225, 512, 0, -15, 0],
+                [1650, 962, 272, 377, 0, -148, -95],
+                [1788, 1341, 218, 512, 0, -23, 0]
             ],
 
             "animations": {
                 "P_Road": { "frames": [0] },
-                "nitro": { "frames": [1, 5, 3] },
-                "explosion": { "frames": [6, 4, 2] },
-                "car": { "frames": [7] },
-                "car_damage": { "frames": [8] },
-                "gun_damaged": { "frames": [9] },
-                "gun": { "frames": [10] },
-                "front_glow": { "frames": [11] },
-                "door": { "frames": [12] }
+                "Explosion1": { "frames": [24, 5, 2, 4, 3, 1, 6, 11, 8, 7, 12] },
+                "front_glow": { "frames": [9] },
+                "door": { "frames": [10] },
+                "SAG_Fastlane-Logo_Master": { "frames": [13] },
+                "button": { "frames": [14] },
+                "car": { "frames": [15] },
+                "car_damage": { "frames": [16] },
+                "gun_damaged": { "frames": [17] },
+                "gun": { "frames": [18] },
+                "health_pack": { "frames": [19] },
+                "P_Boost": { "frames": [20] },
+                "P_DoubleFire": { "frames": [21] },
+                "nitro": { "frames": [22, 25, 23] }
             },
 
             "texturepacker": [
-                "SmartUpdateHash: $TexturePacker:SmartUpdate:1e0cede61969728568ff4491b351209d:9bb506919afbb5b0a6c8232e52cd2dc2:b5868bc2dd1b7e51881e8775bad9d09b$",
+                "SmartUpdateHash: $TexturePacker:SmartUpdate:1fbb2c4b48c3ca49b351c46651e66640:649931bb3d7ca5423750e17efbf6d53b:b5868bc2dd1b7e51881e8775bad9d09b$",
                 "Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
             ]
 
         }
+
+
 
     ;
 
 	var spriteSheet;
 
 
-    var circle;
     var stage;
 
     var posX, posY;
@@ -159,19 +179,22 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         createjs.Ticker.framerate = 40;
         createjs.Ticker.addEventListener("tick", Update);
-
+        
 		spriteSheet = new createjs.SpriteSheet(spritesheetData);
 
         BuildRoad();
 
         BuildCarNitro();
-        BuildCar(sx(0.5), sy(0.2), sy(0.3), sy(0.5));
+        BuildCar(sx(0.5), sy(0.3), sy(0.3), sy(0.5));
         BuildCarDamaged();
         BuildCarGun();
-        // BuildCarNitro();
+
+        BuildExplosion();
+        BuildExplosionCircle();
 
         // BuildUpgradeButton(sx(0.5), sy(0.8), sx(0.5), sy(0.25));
         BuildAllUpgradeButtons();
+        
         BuildCTAButton();
 
         Text();
@@ -180,7 +203,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 		
 		gameReset();
     }
-	
+
+    
+    
+    // CAR
 	
 	var car;
     var car_Damaged;
@@ -237,13 +263,14 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 			car.y = y - r(250);
 		}
 	}
-	
-	
+
+
+    // ROAD
 	
 	
 	var road;
     var roadSpeed = 3;
-    var roadSpeed_SLOW = 3;
+    var roadSpeed_SLOW = 2;
     var roadSpeed_MEDIUM = 5;
     var roadSpeed_FAST = 8;
     var roadSpeed_INSANE = 12;
@@ -258,7 +285,67 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     }
 	
     
-	
+    
+    // EXPLOSIONS
+    
+    var explosion;
+    var circle;
+
+    function BuildExplosion()
+    {
+        explosion = new createjs.Sprite(spriteSheet, "Explosion1");
+        explosion.framerate = 15;
+        SetScale(explosion);
+        stage.addChild(explosion);
+
+        explosion.visible = false;
+    }
+    
+    function BuildExplosionCircle()
+    {
+        circle = new createjs.Shape();
+        circle.graphics.beginFill("White").drawCircle(0, 0, r(2000));
+        circle.x = sx(0.5);
+        circle.y = sy(0.5);
+        stage.addChild(circle);
+        
+        circle.visible = false;
+    }
+
+    function PlayFlash()
+    {
+        createjs.Tween.get(circle)
+            .to({alpha:1, visible:true}, 3)
+            .wait(120)
+            .to({alpha:0, visible:false}, 300);
+    }
+
+    function PlayFlashLong()
+    {
+        createjs.Tween.get(circle)
+            .to({alpha:1, visible:true}, 3)
+            .wait(320)
+            .to({alpha:0, visible:false}, 500);
+    }
+    
+    function PlayExplosionCircle()
+    {
+        createjs.Tween.get(explosion)
+            .wait(100)
+            .to({alpha:1, visible:true}, 1)
+            .wait(420)
+            .to({alpha:0, visible:false}, 222);
+        
+        explosion.y = car.y - r(250);
+    }
+    
+    function UpdateExplosion()
+    {
+        explosion.y = lerp(explosion.y, car.y - r(250), 0.05);
+    }
+    
+    // UPGRADE BUTTONS
+    
     
     function BuildUpgradeButton(x, y, width, height)
     {
@@ -331,7 +418,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     }
 
 
-    function Update() 
+    function Update(event) 
     {
         delta = createjs.Ticker.interval;
         timeSinceStart += delta;
@@ -340,7 +427,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         
         UpdateCarParts();
         
-        stage.update();
+        UpdateExplosion();
+        
+        stage.update(event);
     }
     
     function UpdateRollingRoad()
@@ -431,7 +520,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         currentStage = 0;
         text.text = "0 DAMAGED CAR";
 
-        SetCarPosition(-1, sy(0.5));
+        SetCarPosition(-1, carPosYStart);
 
         car_Damaged.visible = true;
         car_Gun.visible = false;
@@ -440,6 +529,16 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         roadSpeed = roadSpeed_SLOW;
 
         createjs.Tween.removeTweens(car);
+
+        var speed = 2300;
+        var distance = 70;
+        
+        car_Tween = createjs.Tween.get(car, { loop: true })
+            .to({ y: car.y + r(distance) }, speed, createjs.Ease.sineInOut)
+            .to({ y: car.y }, speed, createjs.Ease.sineInOut);
+
+        PlayFlashLong();
+        PlayExplosionCircle();
     }
 	
 	// events that happen after an upgrade
@@ -450,55 +549,83 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         car_Damaged.visible = false;
 		
-		// SetCarPosition(-1, sy(0.5));
+		// SetCarPosition(-1, carPosYStart);
+        
+        var speed = 1000;
+        var distance = 200;
 
         car_Tween = createjs.Tween.get(car, { loop: true })
-        .to({ y: carPosYStart }, 1000, createjs.Ease.sineInOut)
-		.to({ y: carPosYStart + r(100) }, 1000, createjs.Ease.sineInOut);
+            .to({ y: car.y + r(distance) }, speed, createjs.Ease.sineInOut)
+            .to({ y: car.y }, speed, createjs.Ease.sineInOut);
+
+        PlayFlash();
+        // PlayExplosionCircle();
 	}
+	
 	function eventOnUpgrade_ImproveEngine()
 	{
 		text.text = "2 IMPROVED ENGINE!";
 
-        // SetCarPosition(-1, sy(0.5));
         car_Nitro.visible = true;
 
+        SetCarPosition(-1, carPosYStart);
+
+        var speed = 1000;
+        var distance = 200;
+
         car_Tween = createjs.Tween.get(car, { loop: true })
-        .to({ y: carPosYStart }, 800, createjs.Ease.sineInOut)
-		.to({ y: carPosYStart + r(100) }, 800, createjs.Ease.sineInOut);
+            .to({ y: car.y + r(distance) }, speed, createjs.Ease.sineInOut)
+            .to({ y: car.y }, speed, createjs.Ease.sineInOut);
         
         roadSpeed = roadSpeed_MEDIUM;
+
+        PlayFlash();
+        // PlayExplosionCircle();
 	}
+	
 	function eventOnUpgrade_AddGun()
 	{
 		text.text = "3 ADD GUN! PEWPEWPEW";
 		
         car_Gun.visible = true;
 
-        // SetCarPosition(-1, sy(0.5));
+        // SetCarPosition(-1, carPosYStart);
+
+        var speed = 255;
+        var distance = 40;
 
         car_Tween = createjs.Tween.get(car, { loop: true })
-        .to({ y: carPosYStart }, 600, createjs.Ease.sineInOut)
-		.to({ y: carPosYStart + r(100) }, 600, createjs.Ease.sineInOut);
+            .to({ y: car.y + r(distance) }, speed, createjs.Ease.sineInOut)
+            .to({ y: car.y }, speed, createjs.Ease.sineInOut);
+        
 
         car_Tween = createjs.Tween.get(car, { loop: true })
-            .to({ x: car.x + r(5) }, 35, createjs.Ease.sineInOut)
-            .to({ x: car.x }, 35, createjs.Ease.sineInOut);
+            .to({ x: car.x }, 35, createjs.Ease.sineInOut)
+            .to({ x: car.x + r(5) }, 35, createjs.Ease.sineInOut);
         
         roadSpeed = roadSpeed_FAST;
+
+        PlayFlash();
+        PlayExplosionCircle();
 	}
     
 	function event_Finish()
 	{
 		text.text = "4 FINISH!!!!";
 		
-        // SetCarPosition(-1, sy(0.5));
+        // SetCarPosition(-1, carPosYStart);
+
+        var speed = 55;
+        var distance = 15;
 
         car_Tween = createjs.Tween.get(car, { loop: true })
-            .to({ x: car.x }, 55, createjs.Ease.sineInOut)
-            .to({ x: car.x + r(15) }, 55, createjs.Ease.sineInOut);
+            .to({ y: car.y + r(distance) }, speed, createjs.Ease.sineInOut)
+            .to({ y: car.y }, speed, createjs.Ease.sineInOut);
 
         roadSpeed = roadSpeed_INSANE;
+
+        PlayFlash();
+        PlayExplosionCircle();
 	}
     
 
