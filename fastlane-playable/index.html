@@ -328,9 +328,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         circle.visible = false;
     }
 
-    function PlayFlash()
+    function PlayFlash(delay = 0)
     {
         createjs.Tween.get(circle)
+            .wait(delay)
             .to({alpha:1, visible:true}, 3)
             .wait(120)
             .to({alpha:0, visible:false}, 300);
@@ -344,11 +345,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
             .to({alpha:0, visible:false}, 500);
     }
     
-    function PlayExplosionCircle()
+    function PlayExplosionCircle(delay = 0)
     {
         createjs.Tween.get(explosion)
+            .wait(delay)
             .wait(100)
-            .to({alpha:1, visible:true}, 1)
+            .to({alpha:1, visible:true, currentFrame:0}, 1)
             .wait(420)
             .to({alpha:0, visible:false}, 222);
         
@@ -394,6 +396,26 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 		
         buttonUpgrade.addEventListener("click", OnPressUpgrade);
     }
+
+    var icon_Health;
+    var icon_Nitro;
+    var icon_Gun;
+    
+    function AnimateIcon(icon, animationTime, x, y)
+    {
+        var xy = [icon.x, icon.y];
+        createjs.Tween.get(icon, {loop: false})
+            .to(
+                {
+                    x: x,
+                    y: y,
+                }, animationTime, createjs.Ease.sineIn)
+            .to(
+                {
+                    x: xy[0],
+                    y: xy[1],
+                }, 1, createjs.Ease.sineInOut);
+    }
     
     function BuildAllUpgradeButtons()
     {
@@ -403,13 +425,13 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         var height = sy(0.4) * screenScale();
         
         x = sx(0.175);
-        CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgradeFixBody, "health");
+        icon_Health = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgradeFixBody, "health");
         
         x = sx(0.5);
-        CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_ImproveEngine, "P_Boost");
+        icon_Nitro = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_ImproveEngine, "P_Boost");
 
         x = sx(0.825);
-        CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_AddGun, "P_DoubleFire");
+        icon_Gun = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_AddGun, "P_DoubleFire");
     }
     
     function CreateUpgradeButton(x, y, width, height, scaleX, scaleY, action, iconName)
@@ -426,8 +448,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         icon.x = button.x + button.getBounds().width / 2 - (icon.getBounds().width * 0.8);
         icon.y = button.y + button.getBounds().height / 2 - (icon.getBounds().height * 0.8);
         stage.addChild(icon);
-        
-        return button;
+
+        return icon;
     }
     
     var buttonCTA;
@@ -594,35 +616,43 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	{
 		text.text = "1 FIXED BODY";
 
-        car_Damaged.visible = false;
-
+        // car_Damaged.visible = false;
         StartCarAnimationY(1000, 200);
+        
+        var iconAnimationTime = 255;
+        AnimateIcon(icon_Health, iconAnimationTime, sx(0.45), sy(0.3));
 
-        PlayFlash();
-        // PlayExplosionCircle();
+        createjs.Tween.get(car_Damaged, { loop: false })
+            .wait(iconAnimationTime)
+            .to({ visible: false }, 12, createjs.Ease.sineInOut);
+        
+        PlayFlash(iconAnimationTime);
 	}
 	
 	function eventOnUpgrade_ImproveEngine()
 	{
 		text.text = "2 IMPROVED ENGINE!";
 
-        car_Nitro.visible = true;
+        // car_Nitro.visible = true;
 
         StartCarAnimationY(1000, 200);
         
         roadSpeed = roadSpeed_MEDIUM;
+        
+        var iconAnimationTime = 255;
+        AnimateIcon(icon_Nitro, iconAnimationTime, sx(0.45), sy(0.3));
 
-        PlayFlash();
-        // PlayExplosionCircle();
+        createjs.Tween.get(car_Nitro, { loop: false })
+            .wait(iconAnimationTime)
+            .to({ visible: true }, 12, createjs.Ease.sineInOut);
+        
+        PlayFlash(iconAnimationTime);
 	}
 	
 	function eventOnUpgrade_AddGun()
 	{
 		text.text = "3 ADD GUN! PEWPEWPEW";
 		
-        car_Gun.visible = true;
-        muzzleFlash.visible = true;
-
         StartCarAnimationY(255, 40);
 
         car_Tween = createjs.Tween.get(car, { loop: true })
@@ -631,8 +661,21 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         
         roadSpeed = roadSpeed_FAST;
 
-        PlayFlash();
-        PlayExplosionCircle();
+        var iconAnimationTime = 255;
+        AnimateIcon(icon_Gun, iconAnimationTime, sx(0.45), sy(0.3));
+
+        // car_Gun.visible = true;
+        createjs.Tween.get(car_Gun, { loop: false })
+            .wait(iconAnimationTime)
+            .to({ visible: true }, 12, createjs.Ease.sineInOut);
+
+        // muzzleFlash.visible = true;
+        createjs.Tween.get(muzzleFlash, { loop: false })
+            .wait(iconAnimationTime)
+            .to({ visible: true }, 12, createjs.Ease.sineInOut);
+
+        PlayFlash(iconAnimationTime);
+        PlayExplosionCircle(iconAnimationTime);
 	}
     
 	function event_Finish()
