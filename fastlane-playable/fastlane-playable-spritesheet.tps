@@ -192,7 +192,6 @@
             <key type="filename">sprites/Explosion1_00008.png</key>
             <key type="filename">sprites/Explosion1_00009.png</key>
             <key type="filename">sprites/Explosion1_00010.png</key>
-            <key type="filename">sprites/health_pack.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -334,6 +333,19 @@
                 <rect>17,19,33,38</rect>
                 <key>scale9Paddings</key>
                 <rect>17,19,33,38</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">sprites/health.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>16,18,33,37</rect>
+                <key>scale9Paddings</key>
+                <rect>16,18,33,37</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

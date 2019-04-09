@@ -176,9 +176,17 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         return current + (final - current) * percentage;
     }
+    
+    function DoAfterDelay(delay, action)
+    {
+        createjs.Tween.get(text)
+        .wait(delay)
+        .call(action);
+    }
 
     // start
-    function Start() {
+    function Start() 
+    {
         rez = screenResolutionMultiplier;
 
         canvasWidth = window.innerWidth;
@@ -202,15 +210,15 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         BuildMuzzleFlash();
         
-        BuildExplosion();
-        BuildExplosionCircle();
-
         // BuildUpgradeButton(sx(0.5), sy(0.8), sx(0.5), sy(0.25));
         BuildAllUpgradeButtons();
         
         BuildCTAButton();
 
         Text();
+        
+        BuildExplosion();
+        BuildExplosionCircle();
 
         stage.update();
 		
@@ -345,14 +353,20 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
             .to({alpha:0, visible:false}, 500);
     }
     
-    function PlayExplosionCircle(delay = 0)
+    function PlayExplosionCircle(delay = 0, scale = 1)
     {
+        var oldScale = explosion.scale;
+        explosion.scale = oldScale * scale;
         createjs.Tween.get(explosion)
             .wait(delay)
             .wait(100)
             .to({alpha:1, visible:true, currentFrame:0}, 1)
             .wait(420)
-            .to({alpha:0, visible:false}, 222);
+            .to({alpha:0, visible:false}, 222)
+            .call(function()
+            {
+                explosion.scale = oldScale;
+            });
         
         explosion.y = car.y - r(250);
     }
@@ -416,6 +430,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
                     y: xy[1],
                 }, 1, createjs.Ease.sineInOut);
     }
+
+    var btn_Health;
+    var btn_Nitro;
+    var btn_Gun;
     
     function BuildAllUpgradeButtons()
     {
@@ -425,13 +443,29 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         var height = sy(0.4) * screenScale();
         
         x = sx(0.175);
-        icon_Health = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgradeFixBody, "health");
+        var items = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgradeFixBody, "health");
+        btn_Health = items[0];
+        icon_Health = items[1];
         
         x = sx(0.5);
-        icon_Nitro = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_ImproveEngine, "P_Boost");
+        items = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_ImproveEngine, "P_Boost");
+        btn_Nitro = items[0];
+        icon_Nitro = items[1];
 
         x = sx(0.825);
-        icon_Gun = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_AddGun, "P_DoubleFire");
+        items = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_AddGun, "P_DoubleFire");
+        btn_Gun = items[0];
+        icon_Gun = items[1];
+    }
+
+    function ToggleUpgradeButtons(show)
+    {
+        btn_Gun.visible = show;
+        btn_Nitro.visible = show;
+        btn_Health.visible = show;
+        icon_Gun.visible = show;
+        icon_Nitro.visible = show;
+        icon_Health.visible = show;
     }
     
     function CreateUpgradeButton(x, y, width, height, scaleX, scaleY, action, iconName)
@@ -449,7 +483,18 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         icon.y = button.y + button.getBounds().height / 2 - (icon.getBounds().height * 0.8);
         stage.addChild(icon);
 
-        return icon;
+        return [ button, icon ];
+    }
+
+    function SetButtonDisabled(button, delay = 0)
+    {
+        DoAfterDelay(delay, function()
+        {
+            button.filters = [
+                new createjs.ColorFilter(0.4,0.4,0.4,1, 0,0,0,1)
+            ];
+            button.cache(0,0,button.getBounds().width,button.getBounds().height);
+        });
     }
     
     var buttonCTA;
@@ -471,14 +516,20 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         buttonCTA.addEventListener("click", OnPressUpgrade);
         
         ctaText = new createjs.Text("RACE NOW!", r(90) + "px alfa_slab_oneregular", "#1e295b");
-        ctaText.x = buttonCTA.x + r(buttonCTA.getBounds().width) * 0.3;
-        ctaText.y = buttonCTA.y + r(buttonCTA.getBounds().height * 1.25);
         ctaText.textBaseline = "alphabetic";
         stage.addChild(ctaText);
 
+        SnapTextToButton(ctaText, buttonCTA);
+        
         // var tweenCTA = createjs.Tween.get(buttonCTA, { loop: true })
         //     .to({ scaleY: buttonCTA.scaleY }, 555, createjs.Ease.sineInOut)
         //     .to({ scaleY: buttonCTA.scaleY * 1.5 }, 255, createjs.Ease.sineInOut);
+    }
+    
+    function SnapTextToButton(text, sprite)
+    {
+        text.x = sprite.x + r(sprite.getBounds().width) * 0.3;
+        text.y = sprite.y + r(sprite.getBounds().height * 1.25);
     }
 
 
@@ -489,7 +540,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         text.y = r(200);
 
         text.textBaseline = "alphabetic";
-        stage.addChild(text);
+        // stage.addChild(text);
     }
 
 
@@ -498,7 +549,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         delta = createjs.Ticker.interval;
         timeSinceStart += delta;
         
-        UpdateRollingRoad();
+        UpdateRollingRoad(); 
         
         UpdateCarParts();
         
@@ -507,6 +558,11 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         UpdateMuzzleFlash();
         
         stage.update(event);
+        
+        if (window.innerWidth != canvasWidth)
+        {
+            Start();
+        }
     }
     
     function UpdateRollingRoad()
@@ -539,6 +595,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	var STAGE_GUN = 2;
 	var STAGE_FINISH = 3;
     var STAGE_GAMEOVER = 4;
+    
+    var stagesCompleted = [];
 	
 	function OnPressUpgrade()
 	{
@@ -570,29 +628,48 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
                 gameReset();
                 break;
 		}
+		
+		CheckIfComplete();
     }
 	
     function actionDoUpgradeFixBody()
     {
-        currentStage = 0;
-        actionDoNextUpgrade();
+        if (!stagesCompleted.includes(0)) 
+        {
+            currentStage = 0;
+            stagesCompleted.push(0);
+            
+            actionDoNextUpgrade();
+        }
     }
 
     function actionDoUpgrade_ImproveEngine()
     {
-        currentStage = 1;
-        actionDoNextUpgrade();
+        if (!stagesCompleted.includes(1)) 
+        {
+            currentStage = 1;
+            stagesCompleted.push(1);
+
+            actionDoNextUpgrade();
+        }
     }
     
     function actionDoUpgrade_AddGun()
     {
-        currentStage = 2;
-        actionDoNextUpgrade();
+        if (!stagesCompleted.includes(2)) 
+        {
+            currentStage = 2;
+            stagesCompleted.push(2);
+
+            actionDoNextUpgrade();
+        }
     }
 
     function gameReset()
     {
         currentStage = 0;
+        stagesCompleted = [];
+        
         text.text = "0 DAMAGED CAR";
 
         car_Damaged.visible = true;
@@ -603,11 +680,20 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         roadSpeed = roadSpeed_SLOW;
 
         createjs.Tween.removeTweens(car);
+        createjs.Tween.removeTweens(text);
 
         StartCarAnimationY(2300, 70);
 
-        PlayFlashLong();
-        PlayExplosionCircle();
+        // PlayFlashLong();
+        PlayExplosionCircle(0, 2);
+        explosion.x = -explosion.getBounds().width * 2.8;
+        explosion.y = -sy(0.5);
+        
+        DoAfterDelay(400, function()
+        {
+            explosion.x = sx(-0.1);
+            explosion.currentFrame = 0;
+        });
     }
 	
 	// events that happen after an upgrade
@@ -627,6 +713,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
             .to({ visible: false }, 12, createjs.Ease.sineInOut);
         
         PlayFlash(iconAnimationTime);
+
+        SetButtonDisabled(btn_Health);
+        SetButtonDisabled(icon_Health, iconAnimationTime);
 	}
 	
 	function eventOnUpgrade_ImproveEngine()
@@ -636,8 +725,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         // car_Nitro.visible = true;
 
         StartCarAnimationY(1000, 200);
-        
-        roadSpeed = roadSpeed_MEDIUM;
+
+        roadSpeed = Math.max(roadSpeed, roadSpeed_MEDIUM);
         
         var iconAnimationTime = 255;
         AnimateIcon(icon_Nitro, iconAnimationTime, sx(0.45), sy(0.3));
@@ -647,19 +736,23 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
             .to({ visible: true }, 12, createjs.Ease.sineInOut);
         
         PlayFlash(iconAnimationTime);
+
+        SetButtonDisabled(btn_Nitro);
+        SetButtonDisabled(icon_Nitro, iconAnimationTime);
 	}
 	
 	function eventOnUpgrade_AddGun()
 	{
 		text.text = "3 ADD GUN! PEWPEWPEW";
 		
-        StartCarAnimationY(255, 40);
-
+        // StartCarAnimationY(255, 40);
+        StartCarAnimationY(85, 15);
+        
         car_Tween = createjs.Tween.get(car, { loop: true })
             .to({ x: car.x }, 35, createjs.Ease.sineInOut)
             .to({ x: car.x + r(5) }, 35, createjs.Ease.sineInOut);
-        
-        roadSpeed = roadSpeed_FAST;
+
+        roadSpeed = Math.max(roadSpeed, roadSpeed_FAST);
 
         var iconAnimationTime = 255;
         AnimateIcon(icon_Gun, iconAnimationTime, sx(0.45), sy(0.3));
@@ -676,21 +769,46 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         PlayFlash(iconAnimationTime);
         PlayExplosionCircle(iconAnimationTime);
+
+        SetButtonDisabled(btn_Gun);
+        SetButtonDisabled(icon_Gun, iconAnimationTime);
 	}
     
 	function event_Finish()
 	{
 		text.text = "4 FINISH!!!!";
 		
-        StartCarAnimation(55, 15);
+        StartCarAnimationY(55, 15);
 
-        roadSpeed = roadSpeed_INSANE;
+        roadSpeed = Math.max(roadSpeed, roadSpeed_INSANE);
 
+        ToggleUpgradeButtons(false);
+        
+        buttonCTA.y = sx(1.56);
+
+        SnapTextToButton(ctaText, buttonCTA);
+
+        var fastlaneLogo = new createjs.Sprite(spriteSheet, "SAG_Fastlane-Logo_Master");
+        fastlaneLogo.scale = 0.75;
+        fastlaneLogo.x = sx(0.5) - fastlaneLogo.getBounds().width * 0.4;
+        fastlaneLogo.y = sy(0.5);
+        stage.addChild(fastlaneLogo);
+        
         PlayFlash();
         PlayExplosionCircle();
 	}
     
-
+    function CheckIfComplete()
+    {
+        if (stagesCompleted.length >= 3)
+        {
+            DoAfterDelay(2200, function()
+            {
+                event_Finish();
+            });
+        }
+    }
+    
 	function StartCarAnimationY(speed, distance)
     {
         SetCarPosition(-1, carPosYStart);
