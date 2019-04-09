@@ -236,9 +236,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     function BuildLogo() 
     {
         fastlaneLogo = new createjs.Sprite(spriteSheet, "SAG_Fastlane-Logo_Master");
-        fastlaneLogo.scale = 0.75;
-        fastlaneLogo.x = sx(0.5) - fastlaneLogo.getBounds().width * 0.4;
-        fastlaneLogo.y = sy(0.5);
+        fastlaneLogo.scale = ValueLandscape(0.4, 0.75);
+        fastlaneLogo.x = sx(0.5) - fastlaneLogo.getBounds().width * 0.4 + ValueLandscape(sx(0.45), 0);
+        fastlaneLogo.y = sy(0.5) + ValueLandscape(sy(-0.35), 0);
         stage.addChild(fastlaneLogo);
     }
     
@@ -307,14 +307,13 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var roadSpeed_SLOW = 2;
     var roadSpeed_MEDIUM = 5;
     var roadSpeed_FAST = 8;
-    var roadSpeed_INSANE = 12;
+    var roadSpeed_INSANE = 8.8;
 	
 	function BuildRoad()
     {
         road = new createjs.Sprite(spriteSheet, "P_Road");
         road.scaleX = ValueLandscape(r(1.5), r(1.5 * 1.7));
         road.scaleY = ValueLandscape(r(0.7), r(1.5 * 2.0));
-        // road.scaleY = r(1.5 * 2.0);
 
         stage.addChild(road);
     }
@@ -407,8 +406,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function UpdateMuzzleFlash()
     {
-        muzzleFlash.x = car.x + r(130);
-        muzzleFlash.y = car.y - r(70);
+        muzzleFlash.x = car.x + r(ValueLandscape(50, 130));
+        muzzleFlash.y = car.y - r(ValueLandscape(50, 120));
     }
     
     
@@ -506,9 +505,18 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         DoAfterDelay(delay, function()
         {
-            button.filters = [
-                new createjs.ColorFilter(0.4,0.4,0.4,1, 0,0,0,1)
-            ];
+            if (!reset) 
+            {
+                button.filters = [
+                    new createjs.ColorFilter(0.4, 0.4, 0.4, 1, 0, 0, 0, 1)
+                ];
+            }
+            else
+            {
+                button.filters = [
+                    new createjs.ColorFilter(1, 1, 1, 1, 0, 0, 0, 1)
+                ];
+            }
             button.cache(0,0,button.getBounds().width,button.getBounds().height);
         });
     }
@@ -602,10 +610,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         car_Damaged.x = car.x;
         car_Damaged.y = car.y;
         
-        car_Gun.x = car.x + r(162.65);
+        car_Gun.x = car.x + r(ValueLandscape(65, 162.65));
         car_Gun.y = car.y;
         
-        car_Nitro.x = car.x - r(40);
+        car_Nitro.x = car.x - r(ValueLandscape(15, 40));
         car_Nitro.y = car.y;
     }
 	
@@ -703,6 +711,13 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         car_Nitro.visible = false;
         muzzleFlash.visible = false;
         fastlaneLogo.visible = false;
+        
+        SetButtonDisabled(btn_Health, 0, true);
+        SetButtonDisabled(icon_Health, 0, true);
+        SetButtonDisabled(btn_Nitro, 0, true);
+        SetButtonDisabled(icon_Nitro, 0, true);
+        SetButtonDisabled(btn_Gun, 0, true);
+        SetButtonDisabled(icon_Gun, 0, true);
         
         ToggleUpgradeButtons(true);
 
@@ -814,7 +829,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         ToggleUpgradeButtons(false);
         
-        buttonCTA.y = sx(1.56);
+        buttonCTA.y = ValueLandscape(buttonCTA.y, sx(1.56));
 
         SnapTextToButton(ctaText, buttonCTA);
 
