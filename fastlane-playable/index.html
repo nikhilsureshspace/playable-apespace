@@ -124,15 +124,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         }
 
-
-
-
-
-
-
-
     ;
-
+	
+	
 	var spriteSheet;
 
 
@@ -144,6 +138,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     var screenX, screenY;
     var delta, timeSinceStart = 0;
+    
+    var isLandscape = false;
     
     // scale a value based on the screen resolution
     function r(value)
@@ -162,8 +158,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function SetScale(image)
     {
-        image.scaleX = screenResolutionMultiplier / 0.5;
-        image.scaleY = screenResolutionMultiplier / 0.5;
+        image.scale = ValueLandscape(0.4, 1.0) * screenResolutionMultiplier / 0.5;
+    }
+    
+    function ValueLandscape(landscape, portrait)
+    {
+        return isLandscape ? landscape : portrait;
     }
     
     function screenScale()
@@ -192,11 +192,13 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         canvasWidth = window.innerWidth;
         canvasHeight = window.innerHeight;
 
+        isLandscape = canvasWidth > canvasHeight;
+
         stage = new createjs.Stage("demoCanvas");
         screenX = document.getElementById("demoCanvas").width  = canvasWidth * screenResolutionMultiplier;
         screenY = document.getElementById("demoCanvas").height = canvasHeight * screenResolutionMultiplier;
 
-        createjs.Ticker.framerate = 40;
+        createjs.Ticker.framerate = 30;
         createjs.Ticker.addEventListener("tick", Update);
         
 		spriteSheet = new createjs.SpriteSheet(spritesheetData);
@@ -204,7 +206,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         BuildRoad();
 
         BuildCarNitro();
-        BuildCar(sx(0.5), sy(0.3), sy(0.3), sy(0.5));
+        BuildCar(ValueLandscape(sx(0.4), sx(0.5)), ValueLandscape(sy(0.65), sy(0.3)));
         BuildCarDamaged();
         BuildCarGun();
 
@@ -216,6 +218,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         BuildCTAButton();
 
         Text();
+        BuildLogo();
         
         BuildExplosion();
         BuildExplosionCircle();
@@ -225,6 +228,19 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 		gameReset();
     }
 
+    
+    // LOGO 
+
+    var fastlaneLogo;
+    
+    function BuildLogo() 
+    {
+        fastlaneLogo = new createjs.Sprite(spriteSheet, "SAG_Fastlane-Logo_Master");
+        fastlaneLogo.scale = 0.75;
+        fastlaneLogo.x = sx(0.5) - fastlaneLogo.getBounds().width * 0.4;
+        fastlaneLogo.y = sy(0.5);
+        stage.addChild(fastlaneLogo);
+    }
     
     
     // CAR
@@ -236,15 +252,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	
     var car_Tween;
     
-	var carSize;
 	var carPosYStart;
     
-    function BuildCar(x, y, width, height)
+    function BuildCar(x, y)
     { 
 		car = new createjs.Sprite(spriteSheet, "car");
         SetScale(car);
-        
-		carSize = [ r(width), r(height) ];
 		
 		SetCarPosition(x, y);
         carPosYStart = y;
@@ -299,8 +312,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	function BuildRoad()
     {
         road = new createjs.Sprite(spriteSheet, "P_Road");
-        road.scaleX = r(1.5 * 1.7);
-        road.scaleY = r(1.5 * 2.0);
+        road.scaleX = ValueLandscape(r(1.5), r(1.5 * 1.7));
+        road.scaleY = ValueLandscape(r(0.7), r(1.5 * 2.0));
+        // road.scaleY = r(1.5 * 2.0);
 
         stage.addChild(road);
     }
@@ -438,22 +452,23 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     function BuildAllUpgradeButtons()
     {
         var x = sx(0.25);
-        var y = sy(0.75);
-        var width = sx(0.6) * screenScale();
-        var height = sy(0.4) * screenScale();
+        var y = sy(ValueLandscape(0.2, 0.75));
+        var width = sx(0.6) * screenScale() * ValueLandscape(0.12, 1);
+        var height = sy(0.4) * screenScale() * ValueLandscape(0.12, 1);
+        var scale = ValueLandscape(0.8, 1.55);
         
-        x = sx(0.175);
-        var items = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgradeFixBody, "health");
+        x = sx(ValueLandscape(0.51, 0.175));
+        var items = CreateUpgradeButton(x, y, width, height, scale, scale, actionDoUpgradeFixBody, "health");
         btn_Health = items[0];
         icon_Health = items[1];
-        
-        x = sx(0.5);
-        items = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_ImproveEngine, "P_Boost");
+
+        x = sx(ValueLandscape(0.68, 0.5));
+        items = CreateUpgradeButton(x, y, width, height, scale, scale, actionDoUpgrade_ImproveEngine, "P_Boost");
         btn_Nitro = items[0];
         icon_Nitro = items[1];
 
-        x = sx(0.825);
-        items = CreateUpgradeButton(x, y, width, height, 1.55, 1.55, actionDoUpgrade_AddGun, "P_DoubleFire");
+        x = sx(ValueLandscape(0.85, 0.825));
+        items = CreateUpgradeButton(x, y, width, height, scale, scale, actionDoUpgrade_AddGun, "P_DoubleFire");
         btn_Gun = items[0];
         icon_Gun = items[1];
     }
@@ -479,14 +494,15 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         button.addEventListener("click", action);
 
         var icon = new createjs.Sprite(spriteSheet, iconName);
-        icon.x = button.x + button.getBounds().width / 2 - (icon.getBounds().width * 0.8);
-        icon.y = button.y + button.getBounds().height / 2 - (icon.getBounds().height * 0.8);
+        icon.x = button.x + (button.getBounds().width * ValueLandscape(0.52, 0.5)) - (icon.getBounds().width * ValueLandscape(1.16, 0.8));
+        icon.y = button.y + (button.getBounds().height * ValueLandscape(0.5, 0.5)) - (icon.getBounds().height * ValueLandscape(1.16, 0.8));
+        icon.scale = ValueLandscape(0.6, 1.0);
         stage.addChild(icon);
 
         return [ button, icon ];
     }
 
-    function SetButtonDisabled(button, delay = 0)
+    function SetButtonDisabled(button, delay = 0, reset = false)
     {
         DoAfterDelay(delay, function()
         {
@@ -502,34 +518,39 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function BuildCTAButton()
     {
-        var x = sx(0.5);
-        var y = sy(0.925);
-        var width = screenScale() * sx(1.9);
-        var height = screenScale() * sy(0.4);
-
         buttonCTA = new createjs.Sprite(spriteSheet, "buttonCTA");
-        buttonCTA.x = x - r(width)/2;
-        buttonCTA.y = y - r(height)/2;
-        buttonCTA.scaleX = r(1.47);
-        buttonCTA.scaleY = r(2);
         stage.addChild(buttonCTA);
-        buttonCTA.addEventListener("click", OnPressUpgrade);
+        buttonCTA.addEventListener("click", OnPressCTA);
         
         ctaText = new createjs.Text("RACE NOW!", r(90) + "px alfa_slab_oneregular", "#1e295b");
         ctaText.textBaseline = "alphabetic";
         stage.addChild(ctaText);
-
-        SnapTextToButton(ctaText, buttonCTA);
         
         // var tweenCTA = createjs.Tween.get(buttonCTA, { loop: true })
         //     .to({ scaleY: buttonCTA.scaleY }, 555, createjs.Ease.sineInOut)
         //     .to({ scaleY: buttonCTA.scaleY * 1.5 }, 255, createjs.Ease.sineInOut);
     }
     
+    function SetCTAButtonPosition()
+    {
+        var x = sx(0.5);
+        var y = sy(0.925);
+        var width = screenScale() * sx(1.9);
+        var height = screenScale() * sy(0.4);
+        buttonCTA.x = x - r(width) * ValueLandscape(0.01, 0.5);
+        buttonCTA.y = y - r(height) * ValueLandscape(1.45, 0.5);
+        buttonCTA.scaleX = r(ValueLandscape(0.78, 1.47));
+        buttonCTA.scaleY = r(ValueLandscape(1, 2));
+
+        SnapTextToButton(ctaText, buttonCTA);
+    }
+    
     function SnapTextToButton(text, sprite)
     {
-        text.x = sprite.x + r(sprite.getBounds().width) * 0.3;
-        text.y = sprite.y + r(sprite.getBounds().height * 1.25);
+        text.scale = ValueLandscape(0.6, 1);
+        
+        text.x = sprite.x + r(sprite.getBounds().width * ValueLandscape(0.12, 0.3));
+        text.y = sprite.y + r(sprite.getBounds().height * ValueLandscape(0.7, 1.25));
     }
 
 
@@ -568,7 +589,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     function UpdateRollingRoad()
     {
         road.x = r(100) * Math.sin(timeSinceStart * 0.00035) + sx(-0.3);
-        road.y += r(roadSpeed) * delta;
+        road.y += r(ValueLandscape(roadSpeed * 0.3, roadSpeed)) * delta;
         
         if (road.y > sy(0))
         {
@@ -598,6 +619,11 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     var stagesCompleted = [];
 	
+    function OnPressCTA()
+    {
+        gameReset();    
+    }
+    
 	function OnPressUpgrade()
 	{
 		actionDoNextUpgrade();
@@ -676,7 +702,11 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         car_Gun.visible = false;
         car_Nitro.visible = false;
         muzzleFlash.visible = false;
+        fastlaneLogo.visible = false;
+        
+        ToggleUpgradeButtons(true);
 
+        SetCTAButtonPosition();
         roadSpeed = roadSpeed_SLOW;
 
         createjs.Tween.removeTweens(car);
@@ -788,11 +818,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         SnapTextToButton(ctaText, buttonCTA);
 
-        var fastlaneLogo = new createjs.Sprite(spriteSheet, "SAG_Fastlane-Logo_Master");
-        fastlaneLogo.scale = 0.75;
-        fastlaneLogo.x = sx(0.5) - fastlaneLogo.getBounds().width * 0.4;
-        fastlaneLogo.y = sy(0.5);
-        stage.addChild(fastlaneLogo);
+        fastlaneLogo.visible = true;
         
         PlayFlash();
         PlayExplosionCircle();
