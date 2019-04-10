@@ -184,10 +184,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     // start
     function Start() 
     {
-        canvasWidth = window.canvasWidth;//window.innerWidth;
-        canvasHeight = window.canvasHeight;//window.innerHeight;
-        canvasWidth = window.innerWidth;
-        canvasHeight = window.innerHeight;
+        canvasWidth = windowSizeX;
+        canvasHeight = windowSizeY;
 
         aspectRatio = canvasWidth / canvasHeight;
         // isLandscape = canvasWidth > canvasHeight;
@@ -1015,6 +1013,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 <head>
 
 
+<script>
+    var screenSizeX = window.innerWidth;
+    var screenSizeY = window.innerHeight;
+    
+</script>
+    
 <script> /* OPTION A) Standard System */
 
 </script>
@@ -1030,7 +1034,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function onReadyCallback(){
         //If the ad is visible start the game
-        dapi.isViewable() ? startGame();
+        if (dapi.isViewable()) {
+            startGame();
+        }
+        
         //Use dapi functions
         dapi.addEventListener("viewableChange", viewableChangeCallback);
         dapi.addEventListener("adResized", gameReset);
@@ -1039,6 +1046,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function startGame() {
         //start your game
+        screenSizeX = dapi.getScreenSize().width;
+        screenSizeY = dapi.getScreenSize().height;
         Start();
     }
     
