@@ -1082,8 +1082,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     function audioVolumeChangeCallback(volume){
         var isAudioEnabled = !!volume;
         if (isAudioEnabled){
+            startGame();
             //START or turn on the sound
         } else {
+            PauseGame();
             //PAUSE the turn off the sound
         }
     }
