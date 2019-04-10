@@ -192,6 +192,7 @@
             <key type="filename">sprites/Explosion1_00008.png</key>
             <key type="filename">sprites/Explosion1_00009.png</key>
             <key type="filename">sprites/Explosion1_00010.png</key>
+            <key type="filename">sprites/icon_hand.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
