@@ -1136,19 +1136,16 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     window.onload = function()
     {
+        windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * WINDOW_SCALE;
+        windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * WINDOW_SCALE;
+        
         if (dapi) 
-        {
-            windowSizeX = dapi.getScreenSize().width * WINDOW_SCALE;
-            windowSizeY = dapi.getScreenSize().height * WINDOW_SCALE;
-            
+        {            
             (dapi.isReady()) ? onReadyCallback() : dapi.addEventListener("ready", onReadyCallback);
         } 
         else
-        {
-            windowSizeX = window.outerWidth * WINDOW_SCALE;
-            windowSizeY = window.outerHeight * WINDOW_SCALE;
-            
-            Start();
+        {            
+            startGame();
         }
         //Here you can put other code that not related to dapi logic
     };
@@ -1170,8 +1167,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function startGame() {
         //start your game
-        windowSizeX = dapi.getScreenSize().width * WINDOW_SCALE;
-        windowSizeY = dapi.getScreenSize().height * WINDOW_SCALE;
+        windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * WINDOW_SCALE;
+        windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * WINDOW_SCALE;
+        
         Start();
     }
     
