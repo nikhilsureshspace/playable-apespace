@@ -1033,6 +1033,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     };
     
     function onReadyCallback(){
+        dapi.removeEventListener("ready", onReadyCallback);
+        var isAudioEnabled = !!dapi.getAudioVolume();
+
         //If the ad is visible start the game
         if (dapi.isViewable()) {
             startGame();
