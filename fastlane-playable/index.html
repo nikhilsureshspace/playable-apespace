@@ -1,7 +1,7 @@
 <html>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> -->
+ <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> -->
 
 <style>
     @font-face {
@@ -30,7 +30,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
 
 <body onload="Start();" style="background:black; margin: 0px;">
-<canvas id="demoCanvas" style="background:white; width: 100%; height: 100%; margin: 0px"></canvas>
+<canvas id="demoCanvas" style="background:black; margin: 0px; width: 100%; height: 100%></canvas>
 <div class="fontPreload">.</div>
 </body>
 
@@ -49,69 +49,70 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         /* CUT FROM THE LINE BELOW */
         /* ----------------------------------------------------------------- */
-        {
+            {
 
-            "images": [
-                "fastlane-upgrade-sprites.png"
-            ],
+                "images": [
+                    "fastlane-upgrade-sprites.png"
+                ],
 
-            "framerate": 20,
-            "frames": [
-                [1, 1, 1024, 1024, 0, 0, 0],
-                [1, 1027, 634, 114, 0, 0, 0],
-                [1027, 1, 226, 512, 0, -15, 0],
-                [1, 1143, 225, 512, 0, -15, 0],
-                [1, 1657, 500, 230, 0, 0, 0],
-                [228, 1143, 218, 512, 0, -23, 0],
-                [1027, 515, 228, 237, 0, -5, -18],
-                [1027, 754, 230, 235, 0, -13, -6],
-                [448, 1143, 205, 240, 0, -17, -16],
-                [448, 1385, 218, 240, 0, -21, -16],
-                [503, 1627, 206, 240, 0, -20, -16],
-                [655, 1027, 220, 237, 0, -7, -19],
-                [877, 1027, 210, 239, 0, -13, -17],
-                [1089, 991, 189, 212, 0, 0, 0],
-                [668, 1266, 206, 237, 0, -14, -16],
-                [876, 1268, 223, 233, 0, -15, -16],
-                [1101, 1205, 160, 210, 0, -47, -7],
-                [711, 1505, 140, 216, 0, -39, -33],
-                [853, 1505, 136, 216, 0, -39, -33],
-                [991, 1503, 127, 213, 0, -71, -11],
-                [1120, 1417, 127, 188, 0, -73, -47],
-                [711, 1723, 74, 74, 0, -1, 0],
-                [1120, 1607, 74, 73, 0, -1, -1],
-                [787, 1723, 67, 76, 0, 0, 0],
-                [856, 1723, 65, 73, 0, 0, 0],
-                [923, 1723, 57, 76, 0, 0, 0],
-                [711, 1799, 55, 55, 0, 0, 0],
-                [668, 1505, 27, 55, 0, 0, 0]
-            ],
+                "framerate": 20,
+                "frames": [
+                    [1, 1, 1024, 1024, 0, 0, 0],
+                    [1, 1027, 634, 114, 0, 0, 0],
+                    [1027, 1, 226, 512, 0, -15, 0],
+                    [1, 1143, 225, 512, 0, -15, 0],
+                    [1, 1657, 500, 230, 0, 0, 0],
+                    [228, 1143, 218, 512, 0, -23, 0],
+                    [1027, 515, 228, 237, 0, -5, -18],
+                    [1027, 754, 230, 235, 0, -13, -6],
+                    [448, 1143, 205, 240, 0, -17, -16],
+                    [448, 1385, 218, 240, 0, -21, -16],
+                    [503, 1627, 206, 240, 0, -20, -16],
+                    [655, 1027, 220, 237, 0, -7, -19],
+                    [877, 1027, 210, 239, 0, -13, -17],
+                    [1089, 991, 189, 212, 0, 0, 0],
+                    [668, 1266, 206, 237, 0, -14, -16],
+                    [876, 1268, 223, 233, 0, -15, -16],
+                    [1101, 1205, 160, 210, 0, -47, -7],
+                    [711, 1505, 145, 213, 0, -37, -37],
+                    [858, 1505, 140, 216, 0, -39, -33],
+                    [1000, 1503, 127, 213, 0, -71, -11],
+                    [1129, 1417, 127, 188, 0, -73, -47],
+                    [711, 1720, 74, 74, 0, -1, 0],
+                    [1129, 1607, 74, 73, 0, -1, -1],
+                    [787, 1720, 67, 76, 0, 0, 0],
+                    [711, 1796, 65, 73, 0, 0, 0],
+                    [856, 1723, 57, 76, 0, 0, 0],
+                    [915, 1723, 55, 55, 0, 0, 0],
+                    [668, 1505, 27, 55, 0, 0, 0]
+                ],
 
-            "animations": {
-                "P_Road": { "frames": [0] },
-                "buttonCTA": { "frames": [1] },
-                "nitro": { "frames": [2, 5, 3] },
-                "SAG_Fastlane-Logo_Master": { "frames": [4] },
-                "Explosion1": { "frames": [20, 16, 7, 15, 6, 11, 12, 14, 8, 9, 10] },
-                "button": { "frames": [13] },
-                "car": { "frames": [17] },
-                "car_damage": { "frames": [18] },
-                "icon_hand": { "frames": [19] },
-                "P_Boost": { "frames": [21] },
-                "P_DoubleFire": { "frames": [22] },
-                "gun_damaged": { "frames": [23] },
-                "health": { "frames": [24] },
-                "gun": { "frames": [25] },
-                "front_glow": { "frames": [26] },
-                "door": { "frames": [27] }
-            },
+                "animations": {
+                    "P_Road": { "frames": [0] },
+                    "buttonCTA": { "frames": [1] },
+                    "nitro": { "frames": [2, 5, 3] },
+                    "SAG_Fastlane-Logo_Master": { "frames": [4] },
+                    "Explosion1": { "frames": [20, 16, 7, 15, 6, 11, 12, 14, 8, 9, 10] },
+                    "button": { "frames": [13] },
+                    "car_damage": { "frames": [17] },
+                    "car": { "frames": [18] },
+                    "icon_hand": { "frames": [19] },
+                    "P_Boost": { "frames": [21] },
+                    "P_DoubleFire": { "frames": [22] },
+                    "gun_damaged": { "frames": [23] },
+                    "health": { "frames": [24] },
+                    "gun": { "frames": [25] },
+                    "front_glow": { "frames": [26] },
+                    "door": { "frames": [27] }
+                },
 
-            "texturepacker": [
-                "SmartUpdateHash: $TexturePacker:SmartUpdate:863c68a139284e96c72ef832a68b1477:a9e22379f78621f40647ad48c5675e9a:b5868bc2dd1b7e51881e8775bad9d09b$",
-                "Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
-            ]
+                "texturepacker": [
+                    "SmartUpdateHash: $TexturePacker:SmartUpdate:98498ceb1fc5c03a18119273fcd53366:c24d5361c451fe822ab8873aa9ed341a:b5868bc2dd1b7e51881e8775bad9d09b$",
+                    "Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
+                ]
 
-        }
+            }
+
 
         /* ----------------------------------------------------------------- */
         /* CUT FROM THE LINE ABOVE */
@@ -126,17 +127,17 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     var text;
     var screenResolutionMultiplier = 0.8;
-    var rez;
     
     var screenX, screenY;
     var delta, timeSinceStart = 0;
     
     var isLandscape = true;
+    var aspectRatio;
     
     // scale a value based on the screen resolution
     function r(value)
     {
-        return value * rez;
+        return value * screenResolutionMultiplier;
     }
     
     function sx(value)
@@ -150,7 +151,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function SetScale(image)
     {
-        image.scale = ValueLandscape(0.4, 1.0) * screenResolutionMultiplier / 0.5;
+        image.scale = ValueLandscape(0.4, 1) * screenResolutionMultiplier / 0.5;
     }
     
     function ValueLandscape(landscape, portrait)
@@ -179,13 +180,13 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     // start
     function Start() 
     {
-        rez = screenResolutionMultiplier;
-
         canvasWidth = window.innerWidth;
         canvasHeight = window.innerHeight;
 
-        isLandscape = canvasWidth > canvasHeight;
-
+        aspectRatio = canvasWidth / canvasHeight;
+        // isLandscape = canvasWidth > canvasHeight;
+        isLandscape = aspectRatio > 0.8;
+        
         stage = new createjs.Stage("demoCanvas");
         screenX = document.getElementById("demoCanvas").width  = canvasWidth * screenResolutionMultiplier;
         screenY = document.getElementById("demoCanvas").height = canvasHeight * screenResolutionMultiplier;
@@ -224,13 +225,15 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     // LOGO 
 
     var fastlaneLogo;
+    var fastlaneLogoY = 0;
     
     function BuildLogo() 
     {
         fastlaneLogo = new createjs.Sprite(spriteSheet, "SAG_Fastlane-Logo_Master");
-        fastlaneLogo.scale = ValueLandscape(0.4, 0.75);
-        fastlaneLogo.x = sx(0.5) - fastlaneLogo.getBounds().width * 0.4 + ValueLandscape(sx(0.45), 0);
+        fastlaneLogo.scale = r(ValueLandscape(0.8, 1.5));
+        fastlaneLogo.x = sx(0.5) - fastlaneLogo.getBounds().width * r(0.4) + ValueLandscape(sx(0.25), sx(-0.2));
         fastlaneLogo.y = sy(0.5) + ValueLandscape(sy(-0.35), 0);
+        fastlaneLogoY = fastlaneLogo.y;
         stage.addChild(fastlaneLogo);
     }
     
@@ -362,6 +365,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         var oldScale = explosion.scale;
         explosion.scale = oldScale * scale;
+        explosion.currentFrame = 0;
         createjs.Tween.get(explosion)
             .wait(delay)
             .wait(100)
@@ -496,9 +500,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         button.addEventListener("click", action);
 
         var icon = new createjs.Sprite(spriteSheet, iconName);
-        icon.x = button.x + (button.getBounds().width * ValueLandscape(0.52, 0.5)) - (icon.getBounds().width * ValueLandscape(1.16, 0.8));
-        icon.y = button.y + (button.getBounds().height * ValueLandscape(0.5, 0.5)) - (icon.getBounds().height * ValueLandscape(1.16, 0.8));
-        icon.scale = ValueLandscape(0.6, 1.0);
+        icon.x = button.x + (button.getBounds().width * r(ValueLandscape(0.52, 0.52))) - (icon.getBounds().width * r(ValueLandscape(0.8, 0.1)));
+        icon.y = button.y + (button.getBounds().height * r(ValueLandscape(0.5, 0.5))) - (icon.getBounds().height * r(ValueLandscape(0.8, 0.2)));
+        icon.scale = r(ValueLandscape(0.9, 1.8));
         stage.addChild(icon);
 
         return [ button, icon ];
@@ -631,10 +635,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         tutorialHand.scale = ValueLandscape(0.5, 1.0);
         
-        var startX = sx(ValueLandscape(0.6, 0.2)),
-            startY = sx(ValueLandscape(0.25, 1.4)),
-            endX = sx(ValueLandscape(0.5, 0.0)), 
-            endY = sx(ValueLandscape(0.2, 1.3));
+        var startX = (ValueLandscape(r(600), r(250))),
+            startY = (ValueLandscape(r(300), r(1800))),
+            endX = (ValueLandscape(r(500), r(70))), 
+            endY = (ValueLandscape(r(200), r(1600)));
         
         tutorialHand.x = startX;
         tutorialHand.y = startY;
@@ -649,10 +653,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
                 x: startX,
                 y: startY
             }
-            , 500, createjs.Ease.sineInOut)
+            , 600, createjs.Ease.sineInOut)
             .to(
             { 
-                rotation: r(-80),
+                rotation: r(-50),
                 x: endX,
                 y: endY
             }
@@ -663,15 +667,15 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
                 x: startX,
                 y: startY
             }
-            , 500, createjs.Ease.sineInOut);
+            , 600, createjs.Ease.sineInOut);
     }
 
 
     function CreateTutorialText()
     {
         tutorialText = new createjs.Text("UPGRADE THE CAR!", r(ValueLandscape(30, 70)) + "px alfa_slab_oneregular", "#FFF");
-        tutorialText.x = r(ValueLandscape(sx(1.1), 100));
-        tutorialText.y = r(ValueLandscape(sy(0.2), sy(1.2)));
+        tutorialText.x = r(ValueLandscape(sx(0.7), sx(0.15)));
+        tutorialText.y = r(ValueLandscape(sy(0.2), sy(0.75)));
 
         tutorialText.textBaseline = "alphabetic";
         stage.addChild(tutorialText);
@@ -808,6 +812,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         car_Nitro.visible = false;
         muzzleFlash.visible = false;
         fastlaneLogo.visible = false;
+        car.visible = false;
         
         SetButtonDisabled(btn_Health, 0, true);
         SetButtonDisabled(icon_Health, 0, true);
@@ -849,7 +854,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	{
 		text.text = "1 FIXED BODY";
 
-        // car_Damaged.visible = false;
         StartCarAnimationY(1000, 200);
         
         var iconAnimationTime = 255;
@@ -857,7 +861,13 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         createjs.Tween.get(car_Damaged, { loop: false })
             .wait(iconAnimationTime)
-            .to({ visible: false }, 12, createjs.Ease.sineInOut);
+            .to({ visible: false }, 12, createjs.Ease.sineInOut)
+            .call(function()
+            {
+                car.visible = true;
+            });
+
+        
         
         PlayFlash(iconAnimationTime);
 
@@ -872,8 +882,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	function eventOnUpgrade_ImproveEngine()
 	{
 		text.text = "2 IMPROVED ENGINE!";
-
-        // car_Nitro.visible = true;
 
         StartCarAnimationY(1000, 200);
 
@@ -896,7 +904,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	{
 		text.text = "3 ADD GUN! PEWPEWPEW";
 		
-        // StartCarAnimationY(255, 40);
         StartCarAnimationY(85, 15);
         
         car_Tween = createjs.Tween.get(car, { loop: true })
@@ -942,6 +949,22 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
             .to({ y: ValueLandscape(sy(0.56), sy(0.76)) }, 500, createjs.Ease.sineIn);
 
         fastlaneLogo.visible = true;
+        fastlaneLogo.y = fastlaneLogoY + r(250);
+        fastlaneLogo.alpha = 0;
+        createjs.Tween.get(fastlaneLogo, { loop: false })
+            .wait(50)
+            .call(function()
+            {
+                PlayFlashLong();
+                PlayExplosionCircle(350, 1.25);
+            })
+            .to(
+                { 
+                    y: fastlaneLogoY,
+                    alpha: 1
+                }
+            , 1200, createjs.Ease.sineOut);
+
         
         PlayFlash();
         PlayExplosionCircle();
