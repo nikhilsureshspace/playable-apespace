@@ -165,7 +165,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var windowSizeX;
     var windowSizeY;
     
-    var WINDOW_SCALE = 1;
+    var WINDOW_SCALE = 2;
     
     // scale a value based on the screen resolution
     function r(value)
@@ -734,14 +734,14 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         stage.update(event);
         
-        // if (windowSizeX != window.outerWidth * WINDOW_SCALE || windowSizeY != window.outerHeight * WINDOW_SCALE)
-        // {
-        //     windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * WINDOW_SCALE;
-        //     windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * WINDOW_SCALE;
-        //    
-        //     console.log("CHANGE IN WINDOW SIZE")
-        //     Start();
-        // }
+        if (windowSizeX != window.outerWidth * WINDOW_SCALE || windowSizeY != window.outerHeight * WINDOW_SCALE)
+        {
+            windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * WINDOW_SCALE;
+            windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * WINDOW_SCALE;
+
+            console.log("CHANGE IN WINDOW SIZE")
+            Start();
+        }
     }
     
     
@@ -1138,6 +1138,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         if (dapi) 
         {
+            windowSizeX = dapi.getScreenSize().width * WINDOW_SCALE;
+            windowSizeY = dapi.getScreenSize().height * WINDOW_SCALE;
+            
             (dapi.isReady()) ? onReadyCallback() : dapi.addEventListener("ready", onReadyCallback);
         } 
         else
