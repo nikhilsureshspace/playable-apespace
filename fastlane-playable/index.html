@@ -221,10 +221,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         canvasWidth = windowSizeX;
         canvasHeight = windowSizeY;
-
-        aspectRatio = canvasWidth / canvasHeight;
-        // isLandscape = canvasWidth > canvasHeight;
-        isLandscape = aspectRatio > 0.999;
         
         stage = new createjs.Stage("demoCanvas");
         screenX = document.getElementById("demoCanvas").width  = ValueLandscape(800, 790);//canvasWidth * screenResolutionMultiplier;
@@ -740,14 +736,15 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         stage.update(event);
         
-        // if (windowSizeX != window.outerWidth * WINDOW_SCALE || windowSizeY != window.outerHeight * WINDOW_SCALE)
-        // {
-        //     windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * WINDOW_SCALE;
-        //     windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * WINDOW_SCALE;
-        //    
-        //     console.log("CHANGE IN WINDOW SIZE")
-        //     Start();
-        // }
+        var oldWindowSizeX = windowSizeX;
+        var oldWindowSizeY = windowSizeY;
+        ResolveScreenSize();
+        
+        if (oldWindowSizeX != windowSizeX || oldWindowSizeY != windowSizeY)
+        {
+            console.log("CHANGE IN WINDOW SIZE");
+            Start();
+        }
     }
     
     
@@ -1157,9 +1154,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function ResolveScreenSize()
     {
-
-        windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth);
-        windowSizeY = (dapi ? dapi.getScreenSize().height : window.outerHeight);
+        windowSizeX = getWindowWidth();
+        windowSizeY = getWindowHeight();
         aspectRatio = windowSizeX/windowSizeY;
         isLandscape = aspectRatio > 0.999;
         
@@ -1168,8 +1164,18 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         var multiplierLandscape = windowSizeX / 1280;
         var multiplierLandscapeY = windowSizeY / 720;
         
-        windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscape, multiplier);
-        windowSizeY = (dapi ? dapi.getScreenSize().height : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscapeY, multiplierY);
+        windowSizeX = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscape, multiplier);
+        windowSizeY = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscapeY, multiplierY);
+    }
+
+    function getWindowWidth()
+    {
+        return dapi ? dapi.getScreenSize().width : window.outerWidth;
+    }
+    
+    function getWindowHeight()
+    {
+        return dapi ? dapi.getScreenSize().height : window.outerHeight;
     }
     
     function onReadyCallback(){
