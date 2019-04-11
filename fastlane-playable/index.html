@@ -170,8 +170,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var windowSizeY;
     
     // var WINDOW_SCALE = 1;
-    var WINDOW_SCALE = 5.7;
-    var WINDOW_SCALE_LANDSCAPE = 1.4;
+    var WINDOW_SCALE = 3.7;
+    var WINDOW_SCALE_LANDSCAPE = 2.4;
     
     // scale a value based on the screen resolution
     function r(value)
@@ -1151,11 +1151,13 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
             var multiplier = windowSizeX / 1040;
             var multiplierY = windowSizeY / 550;
-   
-            windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
-            windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
+
+            windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth);
+            windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight);
             aspectRatio = windowSizeX/windowSizeY;
             isLandscape = aspectRatio > 0.8;
+            windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
+            windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
             
             Start();
         }
