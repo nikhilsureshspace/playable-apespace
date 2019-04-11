@@ -618,7 +618,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function Text()
     {
-        text = new createjs.Text(windowSizeX + " x " + windowSizeY, r(80) + "px alfa_slab_oneregular", "#FFF");
+        // text = new createjs.Text(windowSizeX + " x \n" + windowSizeY, sx(0.05) + "px alfa_slab_oneregular", "#999");
+        text = new createjs.Text("", sx(0.05) + "px alfa_slab_oneregular", "#999");
         text.x = r(1);
         text.y = r(70);
 
@@ -776,12 +777,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var STAGE_GAMEOVER = 4;
     
     var stagesCompleted = [];
-	
+    
+    var hasStartedPlaying = false;
+    var completionCheckAllowed = false;
     function OnPressCTA()
     {
         userClickedDownloadButton();
-        // gameReset();    
-        // Start();
     }
     
 	function OnPressUpgrade()
@@ -794,6 +795,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	// this action just does the next upgrade, whatever it is
     function actionDoNextUpgrade()
     {
+        hasStartedPlaying = true;
         var lastStage = currentStage;
         currentStage++;
 		switch (lastStage)
@@ -819,7 +821,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         SetCTAButtonPosition(0.5, 0.95);
         ctaText.x = sx(ValueLandscape(config.CTATextGameplayPositionXLandscape, config.CTATextGameplayPositionX));
 		
-		CheckIfComplete();
+        if (completionCheckAllowed) {
+            CheckIfComplete();
+        }
     }
 	
     function actionDoUpgradeFixBody()
@@ -827,7 +831,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         if (!stagesCompleted.includes(0)) 
         {
             currentStage = 0;
-            stagesCompleted.push(0);
+            CheckPushToArray(stagesCompleted, currentStage);
+            CheckPushToArray(stagesCompletedCache, currentStage);
             
             actionDoNextUpgrade();
         }
@@ -835,10 +840,11 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function actionDoUpgrade_ImproveEngine()
     {
-        if (!stagesCompleted.includes(1) && stagesCompleted.includes(0)) 
+        if ((!stagesCompleted.includes(1) && stagesCompleted.includes(0))) 
         {
             currentStage = 1;
-            stagesCompleted.push(1);
+            CheckPushToArray(stagesCompleted, currentStage);
+            CheckPushToArray(stagesCompletedCache, currentStage);
 
             actionDoNextUpgrade();
         }
@@ -846,20 +852,28 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function actionDoUpgrade_AddGun()
     {
-        if (!stagesCompleted.includes(2) && stagesCompleted.includes(0)) 
+        if ((!stagesCompleted.includes(2) && stagesCompleted.includes(0))) 
         {
             currentStage = 2;
-            stagesCompleted.push(2);
+            CheckPushToArray(stagesCompleted, currentStage);
+            CheckPushToArray(stagesCompletedCache, currentStage);
 
             actionDoNextUpgrade();
         }
     }
 
+    function CheckPushToArray(array, item)
+    {
+        if(!array.includes(item)) {
+            array.push(item);
+        }
+    }
+    
+    var stagesCompletedCache = [];
+    
     function gameReset()
     {
-        currentStage = 0;
         stagesCompleted = [];
-        
         // text.text = "0 DAMAGED CAR";
 
         car_Damaged.visible = true;
@@ -894,16 +908,47 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         StartCarAnimationY(2300, 70);
 
-        // PlayFlashLong();
-        PlayExplosionCircle(0, 2);
-        explosion.x = -explosion.getBounds().width * ValueLandscape(0.5, 2.8);
-        explosion.y = -sy(0.5);
-        
-        DoAfterDelay(400, function()
+        if (!hasStartedPlaying) {
+            PlayFlashLong();
+            // PlayExplosionCircle(0, 2);
+            
+            // Disable this epxlosion because Ksenia doesnt want it
+            
+            // explosion.x = -explosion.getBounds().width * ValueLandscape(0.5, 2.8);
+            // explosion.y = -sy(0.5);
+            //
+            // DoAfterDelay(400, function () {
+            //     explosion.x = sx(ValueLandscape(0.0, -0.1));
+            //     explosion.currentFrame = 0;
+            // });
+            currentStage = 0;
+            completionCheckAllowed = true;
+        }
+        else
         {
-            explosion.x = sx(ValueLandscape(0.0, -0.1));
-            explosion.currentFrame = 0;
-        });
+            completionCheckAllowed = false;
+            
+            if (stagesCompletedCache.length >= 3)
+            {
+                eventOnUpgrade_FixBody();
+                eventOnUpgrade_ImproveEngine();
+                eventOnUpgrade_AddGun();
+                event_Finish();
+            }
+            else {
+                for (var i = 0; i < stagesCompletedCache.length; i++) {
+                    if (stagesCompletedCache[i] === 0) {
+                        actionDoUpgradeFixBody();
+                    } else if (stagesCompletedCache[i] === 1) {
+                        actionDoUpgrade_ImproveEngine();
+                    } else if (stagesCompletedCache[i] === 2) {
+                        actionDoUpgrade_AddGun();
+                    }
+                }
+            }
+
+            completionCheckAllowed = true;
+        }
     }
 	
 	// events that happen after an upgrade
@@ -1195,8 +1240,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function startGame() {
         //start your game
-        // windowSizeX = dapi.getScreenSize().width * WINDOW_SCALE;
-        // windowSizeY = dapi.getScreenSize().height * WINDOW_SCALE;
 
         ResolveScreenSize();
      
@@ -1204,7 +1247,14 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     }
     
     function viewableChangeCallback(e){
-        e.isViewable ? this.startGame() : PauseGame(); //start the game or resume
+        if (e.isViewable) 
+        {
+            ResumeGame();
+        }
+        else 
+        {
+            PauseGame();
+        }
     }
     
     function userClickedDownloadButton(event){
@@ -1213,10 +1263,13 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function audioVolumeChangeCallback(volume){
         var isAudioEnabled = !!volume;
-        if (isAudioEnabled){
-            startGame();
+        if (isAudioEnabled)
+        {
+            ResumeGame();
             //START or turn on the sound
-        } else {
+        } 
+        else 
+        {
             PauseGame();
             //PAUSE the turn off the sound
         }
