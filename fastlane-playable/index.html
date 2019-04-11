@@ -227,8 +227,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         isLandscape = aspectRatio > 0.999;
         
         stage = new createjs.Stage("demoCanvas");
-        screenX = document.getElementById("demoCanvas").width  = canvasWidth * screenResolutionMultiplier;
-        screenY = document.getElementById("demoCanvas").height = canvasHeight * screenResolutionMultiplier;
+        screenX = document.getElementById("demoCanvas").width  = ValueLandscape(800, 790);//canvasWidth * screenResolutionMultiplier;
+        screenY = document.getElementById("demoCanvas").height = ValueLandscape(520, 1400);//canvasHeight * screenResolutionMultiplier;
 
         createjs.Ticker.framerate = 30;
         createjs.Ticker.addEventListener("tick", Update);
