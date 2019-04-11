@@ -1148,21 +1148,29 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         } 
         else
         {
-
-            var multiplier = windowSizeX / 1040;
-            var multiplierY = windowSizeY / 550;
-
-            windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth);
-            windowSizeY = (dapi ? dapi.getScreenSize().height : window.outerHeight);
-            aspectRatio = windowSizeX/windowSizeY;
-            isLandscape = aspectRatio > 0.999;
-            windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
-            windowSizeY = (dapi ? dapi.getScreenSize().height : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
+            ResolveScreenSize();
             
             Start();
         }
         //Here you can put other code that not related to dapi logic
     };
+
+    function ResolveScreenSize()
+    {
+
+        windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth);
+        windowSizeY = (dapi ? dapi.getScreenSize().height : window.outerHeight);
+        aspectRatio = windowSizeX/windowSizeY;
+        isLandscape = aspectRatio > 0.999;
+        
+        var multiplier = windowSizeX / 540;
+        var multiplierY = windowSizeY / 960;
+        var multiplierLandscape = windowSizeX / 1280;
+        var multiplierLandscapeY = windowSizeY / 720;
+        
+        windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscape, multiplier);
+        windowSizeY = (dapi ? dapi.getScreenSize().height : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscapeY, multiplierY);
+    }
     
     function onReadyCallback(){
         dapi.removeEventListener("ready", onReadyCallback);
@@ -1183,14 +1191,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         //start your game
         // windowSizeX = dapi.getScreenSize().width * WINDOW_SCALE;
         // windowSizeY = dapi.getScreenSize().height * WINDOW_SCALE;
-        
-        var multiplier = windowSizeX / 1040;
-        var multiplierY = windowSizeY / 550;
-   
-        windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
-        windowSizeY = (dapi ? dapi.getScreenSize().height : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
-        aspectRatio = windowSizeX/windowSizeY;
-        isLandscape = aspectRatio > 0.999;
+
+        ResolveScreenSize();
      
         Start();
     }
