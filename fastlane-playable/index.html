@@ -1188,7 +1188,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         var multiplierY = windowSizeY / 550;
    
         windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
-        windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
+        windowSizeY = (dapi ? dapi.getScreenSize().height : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
         aspectRatio = windowSizeX/windowSizeY;
         isLandscape = aspectRatio > 0.999;
      
