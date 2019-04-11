@@ -169,8 +169,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var windowSizeX;
     var windowSizeY;
     
-    var WINDOW_SCALE = 3;
-    var WINDOW_SCALE_LANDSCAPE = 1.55;
+    var WINDOW_SCALE = 2.7;
+    var WINDOW_SCALE_LANDSCAPE = 1.4;
     
     // scale a value based on the screen resolution
     function r(value)
@@ -1180,9 +1180,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
         windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
         aspectRatio = windowSizeX/windowSizeY;
-        isLandscape = aspectRatio > 0.999;
-        // windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
-        // windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
+        isLandscape = aspectRatio > 0.8;
+
+        var multiplier = windowSizeX / 1040;
+        var multiplierY = windowSizeY / 550;
+        windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplier, WINDOW_SCALE * multiplier);
+        windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierY, WINDOW_SCALE * multiplierY);
     }
     
     function viewableChangeCallback(e){
