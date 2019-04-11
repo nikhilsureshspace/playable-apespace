@@ -1,7 +1,7 @@
 <html>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+ <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> -->
 
 <style>
     @font-face {
@@ -169,8 +169,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var windowSizeX;
     var windowSizeY;
     
-    var WINDOW_SCALE = 2.7;
-    var WINDOW_SCALE_LANDSCAPE = 1.4;
+    var WINDOW_SCALE = 1;
     
     // scale a value based on the screen resolution
     function r(value)
@@ -223,6 +222,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         aspectRatio = canvasWidth / canvasHeight;
         // isLandscape = canvasWidth > canvasHeight;
+        isLandscape = aspectRatio > 0.999;
         
         stage = new createjs.Stage("demoCanvas");
         screenX = document.getElementById("demoCanvas").width  = canvasWidth * screenResolutionMultiplier;
@@ -742,7 +742,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         // {
         //     windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * WINDOW_SCALE;
         //     windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * WINDOW_SCALE;
-        //
+        //    
         //     console.log("CHANGE IN WINDOW SIZE")
         //     Start();
         // }
@@ -1140,15 +1140,16 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     window.onload = function()
     {
-        SetWindowSize();
-        
         if (dapi) 
-        {            
+        {
             (dapi.isReady()) ? onReadyCallback() : dapi.addEventListener("ready", onReadyCallback);
         } 
         else
-        {            
-            startGame();
+        {
+            windowSizeX = window.outerWidth * WINDOW_SCALE;
+            windowSizeY = window.outerHeight * WINDOW_SCALE;
+            
+            Start();
         }
         //Here you can put other code that not related to dapi logic
     };
@@ -1170,37 +1171,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function startGame() {
         //start your game
-        SetWindowSize();
-        
+        windowSizeX = dapi.getScreenSize().width * WINDOW_SCALE;
+        windowSizeY = dapi.getScreenSize().height * WINDOW_SCALE;
         Start();
-    }
-    
-    function SetWindowSize()
-    {
-     windowSizeX = dapi.getScreenSize().width * WINDOW_SCALE;
-     windowSizeY = dapi.getScreenSize().height * WINDOW_SCALE;
-     
-     
-        // var multiplier = windowSizeX / 1040;
-        // var multiplierY = windowSizeY / 550;
-        //
-        // windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
-        // windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE);
-        // aspectRatio = windowSizeX/windowSizeY;
-        // isLandscape = aspectRatio > 0.8;
-     
-     
-     
-     
-     
-
-        // windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplier, WINDOW_SCALE * multiplier);
-        // windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierY, WINDOW_SCALE*multiplierY);
-        
-        // var multiplier = windowSizeX / 1040;
-        // var multiplierY = windowSizeY / 550;
-        // windowSizeX = (dapi ? dapi.getScreenSize().width : window.outerWidth) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplier, WINDOW_SCALE * multiplier);
-        // windowSizeY = (dapi ? dapi.getScreenSize().width : window.outerHeight) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierY, WINDOW_SCALE * multiplierY);
     }
     
     function viewableChangeCallback(e){
