@@ -170,7 +170,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var windowSizeY;
     
     // var WINDOW_SCALE = 1;
-    var WINDOW_SCALE = 5.7;
+    var WINDOW_SCALE = 3.1;
     var WINDOW_SCALE_LANDSCAPE = 2.4;
     
     // scale a value based on the screen resolution
@@ -622,12 +622,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function Text()
     {
-        text = new createjs.Text("RACE!", r(80) + "px alfa_slab_oneregular", "#FFF");
-        text.x = r(100);
-        text.y = r(200);
+        text = new createjs.Text(windowSizeX + " x " + windowSizeY, r(80) + "px alfa_slab_oneregular", "#FFF");
+        text.x = r(1);
+        text.y = r(70);
 
         text.textBaseline = "alphabetic";
-        // stage.addChild(text);
+        stage.addChild(text);
     }
 
     function UpdateCarParts()
@@ -863,7 +863,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         currentStage = 0;
         stagesCompleted = [];
         
-        text.text = "0 DAMAGED CAR";
+        // text.text = "0 DAMAGED CAR";
 
         car_Damaged.visible = true;
         car_Gun.visible = false;
@@ -913,7 +913,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	
 	function eventOnUpgrade_FixBody()
 	{
-		text.text = "1 FIXED BODY";
+		// text.text = "1 FIXED BODY";
 
         StartCarAnimationY(1000, 200);
         
@@ -942,7 +942,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	
 	function eventOnUpgrade_ImproveEngine()
 	{
-		text.text = "2 IMPROVED ENGINE!";
+		// text.text = "2 IMPROVED ENGINE!";
 
         StartCarAnimationY(1000, 200);
 
@@ -963,7 +963,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	
 	function eventOnUpgrade_AddGun()
 	{
-		text.text = "3 ADD GUN! PEWPEWPEW";
+		// text.text = "3 ADD GUN! PEWPEWPEW";
 		
         StartCarAnimationY(85, 15);
         
@@ -995,7 +995,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
 	function event_Finish()
 	{
-		text.text = "4 FINISH!!!!";
+		// text.text = "4 FINISH!!!!";
         ctaText.text = config.CTAText;
 		ctaText.x = sx(ValueLandscape(config.CTATextPositionXLandscape, config.CTATextPositionX));
 		
