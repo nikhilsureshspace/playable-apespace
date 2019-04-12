@@ -1122,8 +1122,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         var multiplierLandscape = windowSizeX / 1280;
         var multiplierLandscapeY = windowSizeY / 720;
 
-        windowSizeX = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscape, multiplier);
-        windowSizeY = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscapeY, multiplierY);
+        windowSizeX = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierLandscape, WINDOW_SCALE * multiplier);
+        windowSizeY = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierLandscapeY, WINDOW_SCALE * multiplierY);
     }
 
     function getWindowWidth()
@@ -1289,10 +1289,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
  <!--MRAID-->
 <script>
     
-    var mraid; 
+    // var mraid; 
     
     // Wait for the SDK to become ready
-    if (mraid) 
+    // if (mraid) 
     {
         if (mraid.getState() === 'loading')
         {
