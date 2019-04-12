@@ -279,8 +279,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     var car_Nitro;
 	
     var car_Tween;
-    
-	var carPosYStart;
+
+    var carPosXStart;
+    var carPosYStart;
     
     function BuildCar(x, y)
     { 
@@ -289,6 +290,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 		
 		SetCarPosition(x, y);
         carPosYStart = y;
+        carPosXStart = car.x;
         
         stage.addChild(car);
     }
@@ -393,7 +395,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         createjs.Tween.get(circle)
             .wait(delay)
             .to({alpha:1, visible:true}, 3)
-            .wait(120)
+            .wait(220)
             .to({alpha:0, visible:false}, 300);
     }
 
@@ -916,6 +918,15 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         createjs.Tween.removeTweens(text);
 
         StartCarAnimationY(2300, 70);
+        var distance = sx(0.05);
+        var laneChangeTime = 2200;
+        car.x = carPosXStart;
+        car_Tween = createjs.Tween.get(car, { loop: true })
+            .to({ x: carPosXStart + r(ValueLandscape(distance * 0.5, distance)) }, laneChangeTime, createjs.Ease.sineInOut)
+            .wait(450)
+            .to({ x: carPosXStart - r(ValueLandscape(distance * 0.5, distance)) }, laneChangeTime, createjs.Ease.sineInOut)
+            .wait(450)
+            .to({ x: carPosXStart }, laneChangeTime, createjs.Ease.sineInOut);
 
         if (!hasStartedPlaying) {
             PlayFlashLong();
@@ -955,11 +966,29 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	{
 		// text.text = "1 FIXED BODY";
 
-        StartCarAnimationY(1000, 200);
-        
         var iconAnimationTime = 255;
+
+        StartCarAnimationY(1000, 200);
+
+        DoAfterDelay(iconAnimationTime, function() {
+            var distance = sx(0.14);
+            var laneChangeTime = 1200;
+            car.x = carPosXStart;
+            car_Tween = createjs.Tween.get(car, { loop: true })
+                .wait(1250)
+                .to({ x: carPosXStart + r(ValueLandscape(distance * 0.5, distance)) }, laneChangeTime, createjs.Ease.sineInOut)
+                .wait(450)
+                .to({ x: carPosXStart }, laneChangeTime, createjs.Ease.sineInOut)
+                .wait(1250)
+                .to({ x: carPosXStart - r(ValueLandscape(distance * 0.5, distance)) }, laneChangeTime, createjs.Ease.sineInOut)
+                .wait(650)
+                .to({ x: carPosXStart }, laneChangeTime, createjs.Ease.sineInOut)
+                .wait(250);
+        });
+        
         AnimateIcon(icon_Health, iconAnimationTime, sx(ValueLandscape(0.2, 0.45)), sy(0.3));
 
+        
         createjs.Tween.get(car_Damaged, { loop: false })
             .wait(iconAnimationTime)
             .to({ visible: false }, 12, createjs.Ease.sineInOut)
@@ -983,12 +1012,29 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	function eventOnUpgrade_ImproveEngine()
 	{
 		// text.text = "2 IMPROVED ENGINE!";
+        var iconAnimationTime = 255;
 
         StartCarAnimationY(1000, 200);
 
+        DoAfterDelay(iconAnimationTime, function() {
+            var distance = sx(0.3);
+            var laneChangeTime = 400;
+            car.x = carPosXStart;
+            car_Tween = createjs.Tween.get(car, {loop: true})
+                .wait(1250)
+                .to({x: carPosXStart + r(ValueLandscape(distance * 0.5, distance))}, laneChangeTime, createjs.Ease.sineInOut)
+                .wait(450)
+                .to({x: carPosXStart}, laneChangeTime, createjs.Ease.sineInOut)
+                .wait(1250)
+                .to({x: carPosXStart - r(ValueLandscape(distance * 0.5, distance))}, laneChangeTime, createjs.Ease.sineInOut)
+                .wait(650)
+                .to({x: carPosXStart}, laneChangeTime, createjs.Ease.sineInOut)
+                .wait(250);
+        });
+
+        
         roadSpeed = Math.max(roadSpeed, roadSpeed_MEDIUM);
         
-        var iconAnimationTime = 255;
         AnimateIcon(icon_Nitro, iconAnimationTime, sx(ValueLandscape(0.2, 0.45)), sy(0.3));
 
         createjs.Tween.get(car_Nitro, { loop: false })
@@ -1004,16 +1050,19 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 	function eventOnUpgrade_AddGun()
 	{
 		// text.text = "3 ADD GUN! PEWPEWPEW";
+        var iconAnimationTime = 255;
 		
         StartCarAnimationY(85, 15);
-        
-        car_Tween = createjs.Tween.get(car, { loop: true })
-            .to({ x: car.x }, 35, createjs.Ease.sineInOut)
-            .to({ x: car.x + r(5) }, 35, createjs.Ease.sineInOut);
+
+        DoAfterDelay(iconAnimationTime, function() {
+            car.x = carPosXStart;
+            car_Tween = createjs.Tween.get(car, {loop: true})
+                .to({x: car.x}, 35, createjs.Ease.sineInOut)
+                .to({x: car.x + r(5)}, 35, createjs.Ease.sineInOut);
+        });
 
         roadSpeed = Math.max(roadSpeed, roadSpeed_FAST);
 
-        var iconAnimationTime = 255;
         AnimateIcon(icon_Gun, iconAnimationTime, sx(ValueLandscape(0.2, 0.45)), sy(0.3));
 
         // car_Gun.visible = true;
