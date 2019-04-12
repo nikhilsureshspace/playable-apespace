@@ -1113,11 +1113,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         var landscapeX = 1280;
         var landscapeY = 720;
         
-        if (aspectRatio < 1.0 && aspectRatio >= 0.7)
-        {
-            portraitY = portraitX;
-        }
-        
         var multiplier = windowSizeX / portraitX;
         var multiplierY = windowSizeY / portraitY;
         var multiplierLandscape = windowSizeX / landscapeX;
@@ -1125,6 +1120,11 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         windowSizeX = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierLandscape, WINDOW_SCALE * multiplier);
         windowSizeY = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierLandscapeY, WINDOW_SCALE * multiplierY);
+
+        if (aspectRatio < 1.0 && aspectRatio >= 0.7)
+        {
+            windowSizeY = windowSizeX;
+        }
     }
 
     function getWindowWidth()
