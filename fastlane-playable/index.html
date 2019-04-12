@@ -1130,12 +1130,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function getWindowWidth()
     {
-        return dapi && dapi.isReady() ? dapi.getScreenSize().width : window.outerWidth;
+        return mraid ? window.innerWidth : (dapi && dapi.isReady() ? dapi.getScreenSize().width : window.outerWidth);
     }
 
     function getWindowHeight()
     {
-        return dapi && dapi.isReady() ? dapi.getScreenSize().height : window.outerHeight;
+        return mraid ? window.innerWidth : (dapi && dapi.isReady() ? dapi.getScreenSize().height : window.outerHeight);
     }
 
 
