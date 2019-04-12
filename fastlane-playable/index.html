@@ -619,8 +619,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function Text()
     {
-        // text = new createjs.Text(windowSizeX + " x \n" + windowSizeY, sx(0.05) + "px alfa_slab_oneregular", "#999");
-        text = new createjs.Text("", sx(0.05) + "px alfa_slab_oneregular", "#999");
+        text = new createjs.Text(windowSizeX + " x \n" + windowSizeY, sx(0.05) + "px alfa_slab_oneregular", "#999");
+        // text = new createjs.Text("", sx(0.05) + "px alfa_slab_oneregular", "#999");
         text.x = r(1);
         text.y = r(70);
 
@@ -1230,22 +1230,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     //     }
     //     //Here you can put other code that not related to dapi logic
     // };
-    //
-    // function ResolveScreenSize()
-    // {
-    //     windowSizeX = getWindowWidth();
-    //     windowSizeY = getWindowHeight();
-    //     aspectRatio = windowSizeX/windowSizeY;
-    //     isLandscape = aspectRatio > 0.999;
-    //    
-    //     var multiplier = windowSizeX / 540;
-    //     var multiplierY = windowSizeY / 960;
-    //     var multiplierLandscape = windowSizeX / 1280;
-    //     var multiplierLandscapeY = windowSizeY / 720;
-    //    
-    //     windowSizeX = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscape, multiplier);
-    //     windowSizeY = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscapeY, multiplierY);
-    // }
     //
     // function onReadyCallback(){
     //     dapi.removeEventListener("ready", onReadyCallback);
