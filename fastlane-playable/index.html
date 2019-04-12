@@ -1294,7 +1294,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         console.log("NO MRAID!");
         window.onload = function () 
         {
-            if (dapi && dapi.isReady())
+            if (dapi)
             {
                 console.log("DAPI!");
                 (dapi.isReady()) ? onReadyCallback() : dapi.addEventListener("ready", onReadyCallback);
