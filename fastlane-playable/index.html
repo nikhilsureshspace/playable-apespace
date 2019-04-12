@@ -1289,10 +1289,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
  <!--MRAID-->
 <script>
     
-    // var mraid; 
+    var mraid; 
     
     // Wait for the SDK to become ready
-    // if (mraid) 
+    if (mraid) 
     {
         if (mraid.getState() === 'loading')
         {
@@ -1331,11 +1331,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         startGame();
     }
-    
-    window.onload = function()
-    {
-        // showMyAd();
-    };
 
     // function openStoreURL()
     // {
