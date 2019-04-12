@@ -1282,12 +1282,14 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
  <!--MRAID-->
 <script>
     
+    var mraid; 
+    
     // Wait for the SDK to become ready
     if (mraid) 
     {
-        if (mraid.getState() === 'loading’)
+        if (mraid.getState() === 'loading')
         {
-            mraid.addEventListener(‘ready’, onSdkReady);
+            mraid.addEventListener('ready', onSdkReady);
         }
         else
         {
@@ -1306,7 +1308,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function onSdkReady() 
     {
-        mraid.addEventListener(‘viewableChange’, viewableChangeHandler);
+        mraid.addEventListener('viewableChange', viewableChangeHandler);
         // Wait for the ad to become viewable for the first time
         if (mraid.isViewable()) {
             showMyAd();
@@ -1316,6 +1318,21 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     function showMyAd()
     {
         startGame();
+    }
+
+    function openStoreURL()
+    {
+        // Detect platform from user agent
+        var userAgent = navigator.userAgent || navigator.vendor;
+        var url = config.storeUrliPhone;
+        var android = config.storeUrlAndroid;
+        if (/android/i.test(userAgent)) {
+            url = android;
+        }
+        if (mraid)
+        {     
+            mraid.open(url);
+        }   
     }
     
 </script>
