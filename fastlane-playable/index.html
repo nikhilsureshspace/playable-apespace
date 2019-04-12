@@ -1276,6 +1276,50 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     }
 </script>
 
+
+
+
+ <!--MRAID-->
+<script>
+    
+    // Wait for the SDK to become ready
+    if (mraid) 
+    {
+        if (mraid.getState() === 'loading’)
+        {
+            mraid.addEventListener(‘ready’, onSdkReady);
+        }
+        else
+        {
+            onSdkReady();
+        }
+    }
+    
+    function viewableChangeHandler(viewable) {
+        // start/pause/resume gameplay, stop/play sounds
+        if(viewable) {
+            showMyAd();
+        } else {
+        // pause
+        }
+    }
+    
+    function onSdkReady() 
+    {
+        mraid.addEventListener(‘viewableChange’, viewableChangeHandler);
+        // Wait for the ad to become viewable for the first time
+        if (mraid.isViewable()) {
+            showMyAd();
+        }
+    }
+    
+    function showMyAd()
+    {
+        startGame();
+    }
+    
+</script>
+
 </head>
 
 </html>
