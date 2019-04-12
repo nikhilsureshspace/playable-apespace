@@ -34,8 +34,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
 
 <!--<body onload="Start();" style="background:black; margin: 0px;">-->
-<body style="background:green; margin: 0px;">
-<canvas id="demoCanvas" style="background:orange; margin: 0px; width: 100%; height: 100%"></canvas>
+<body style="background:black; margin: 0px;">
+<canvas id="demoCanvas" style="background:black; margin: 0px; width: 100%; height: 100%"></canvas>
 <!--<div class="fontPreload"></div>-->
 </body>
 
@@ -620,7 +620,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function Text()
     {
-        text = new createjs.Text(windowSizeX + " x \n" + windowSizeY, sx(0.05) + "px alfa_slab_oneregular", "#999");
+        text = new createjs.Text(Math.floor(getWindowWidth()) + "x" + Math.floor(getWindowHeight()), sx(0.05) + "px alfa_slab_oneregular", "#999");
+        // text = new createjs.Text((windowSizeX) + " x \n" + (windowSizeY), sx(0.05) + "px alfa_slab_oneregular", "#999");
         // text = new createjs.Text("", sx(0.05) + "px alfa_slab_oneregular", "#999");
         text.x = r(1);
         text.y = r(70);
