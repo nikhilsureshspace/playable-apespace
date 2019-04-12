@@ -1,7 +1,7 @@
 <html>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
 
 <style>
     @font-face {
@@ -36,7 +36,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 <!--<body onload="Start();" style="background:black; margin: 0px;">-->
 <body style="background:green; margin: 0px;">
 <canvas id="demoCanvas" style="background:orange; margin: 0px; width: 100%; height: 100%"></canvas>
-<div class="fontPreload">4 LOADING...</div>
+<!--<div class="fontPreload"></div>-->
 </body>
 
 
@@ -1136,8 +1136,31 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         return dapi && dapi.isReady() ? dapi.getScreenSize().height : window.outerHeight;
     }
-	
 
+
+
+    function openStoreURL()
+    {
+        if (mraid) {
+            // Detect platform from user agent
+            var userAgent = navigator.userAgent || navigator.vendor;
+            var url = config.iOSStoreLink;
+            var android = config.androidStoreLink;
+            if (/android/i.test(userAgent)) {
+                url = android;
+            }
+            mraid.open(url);
+        }
+        else if (dapi)
+        {
+            dapi.openStoreUrl();
+        }
+        else
+        {
+            // nothing lol
+            console.log("Click CTA button");
+        }
+    }
 
 </script>
 
@@ -1251,7 +1274,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     }
 
     function userClickedDownloadButton(event){
-        dapi.openStoreUrl();
+        openStoreURL();
     }
 
     function audioVolumeChangeCallback(volume){
@@ -1334,23 +1357,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         startGame();
     }
-    
-    
-
-    // function openStoreURL()
-    // {
-    //     // Detect platform from user agent
-    //     var userAgent = navigator.userAgent || navigator.vendor;
-    //     var url = config.iOSStoreLink;
-    //     var android = config.androidStoreLink;
-    //     if (/android/i.test(userAgent)) {
-    //         url = android;
-    //     }
-    //     if (mraid)
-    //     {     
-    //         mraid.open(url);
-    //     }   
-    // }
     
 </script>
 
