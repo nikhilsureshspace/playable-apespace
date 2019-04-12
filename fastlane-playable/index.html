@@ -726,6 +726,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     function Update(event)
     {
         delta = createjs.Ticker.interval;
+        if (createjs.Ticker.paused)
+        {
+            delta = 0;
+        }
         timeSinceStart += delta;
 
         UpdateRollingRoad();
@@ -842,7 +846,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
             currentStage = 0;
             CheckPushToArray(stagesCompleted, currentStage);
             CheckPushToArray(stagesCompletedCache, currentStage);
-            
+
             actionDoNextUpgrade();
         }
     }
@@ -919,17 +923,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         if (!hasStartedPlaying) {
             PlayFlashLong();
-            // PlayExplosionCircle(0, 2);
-            
-            // Disable this epxlosion because Ksenia doesnt want it
-            
-            // explosion.x = -explosion.getBounds().width * ValueLandscape(0.5, 2.8);
-            // explosion.y = -sy(0.5);
-            //
-            // DoAfterDelay(400, function () {
-            //     explosion.x = sx(ValueLandscape(0.0, -0.1));
-            //     explosion.currentFrame = 0;
-            // });
             currentStage = 0;
             completionCheckAllowed = true;
         }
@@ -1351,7 +1344,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         else 
         {
             // pause
-            PauseGame();
+            // PauseGame();
         }
     }
     
