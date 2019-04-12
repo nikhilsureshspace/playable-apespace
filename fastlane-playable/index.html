@@ -36,7 +36,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 <!--<body onload="Start();" style="background:black; margin: 0px;">-->
 <body style="background:green; margin: 0px;">
 <canvas id="demoCanvas" style="background:orange; margin: 0px; width: 100%; height: 100%"></canvas>
-<div class="fontPreload">3 LOADING...</div>
+<div class="fontPreload">4 LOADING...</div>
 </body>
 
 
@@ -1303,6 +1303,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
             onSdkReady();
         }
     }
+    else
+    {
+        window.onload = function () {
+            showMyAd();
+        };
+    }
     
     function viewableChangeHandler(viewable) {
         // start/pause/resume gameplay, stop/play sounds
@@ -1331,6 +1337,8 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         startGame();
     }
+    
+    
 
     // function openStoreURL()
     // {
