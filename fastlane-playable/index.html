@@ -68,6 +68,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     };
     
 	var useDAPI = true;//window.navigator.platform != "Win32";
+    var dapi;
 
     {
         /* CHANGE THE DATA BELOW */
@@ -1094,6 +1095,40 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
             .to({ y: car.y + r(ValueLandscape(distance * 0.5, distance)) }, speed, createjs.Ease.sineInOut)
             .to({ y: car.y }, speed, createjs.Ease.sineInOut);
     }
+
+    function startGame() {
+        //start your game
+
+        ResolveScreenSize();
+
+        Start();
+    }
+    
+    function ResolveScreenSize()
+    {
+        windowSizeX = getWindowWidth();
+        windowSizeY = getWindowHeight();
+        aspectRatio = windowSizeX/windowSizeY;
+        isLandscape = aspectRatio > 0.999;
+
+        var multiplier = windowSizeX / 540;
+        var multiplierY = windowSizeY / 960;
+        var multiplierLandscape = windowSizeX / 1280;
+        var multiplierLandscapeY = windowSizeY / 720;
+
+        windowSizeX = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscape, multiplier);
+        windowSizeY = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscapeY, multiplierY);
+    }
+
+    function getWindowWidth()
+    {
+        return dapi ? dapi.getScreenSize().width : window.outerWidth;
+    }
+
+    function getWindowHeight()
+    {
+        return dapi ? dapi.getScreenSize().height : window.outerHeight;
+    }
 	
 
 
@@ -1113,7 +1148,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 <script> /* OPTION B) IronSource DAPI */
 
 
-    // var dapi;
     //
     // if (useDAPI) {
     //
@@ -1213,16 +1247,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     //     windowSizeY = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE, WINDOW_SCALE) * ValueLandscape(multiplierLandscapeY, multiplierY);
     // }
     //
-    // function getWindowWidth()
-    // {
-    //     return dapi ? dapi.getScreenSize().width : window.outerWidth;
-    // }
-    //
-    // function getWindowHeight()
-    // {
-    //     return dapi ? dapi.getScreenSize().height : window.outerHeight;
-    // }
-    //
     // function onReadyCallback(){
     //     dapi.removeEventListener("ready", onReadyCallback);
     //     var isAudioEnabled = !!dapi.getAudioVolume();
@@ -1236,14 +1260,6 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     //     dapi.addEventListener("viewableChange", viewableChangeCallback);
     //     dapi.addEventListener("adResized", gameReset);
     //     dapi.addEventListener("audioVolumeChange", audioVolumeChangeCallback);
-    // }
-    //
-    // function startGame() {
-    //     //start your game
-    //
-    //     ResolveScreenSize();
-    // 
-    //     Start();
     // }
     //
     // function viewableChangeCallback(e){
@@ -1282,10 +1298,10 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
  <!--MRAID-->
 <script>
     
-    // var mraid; 
+    var mraid; 
     
     // Wait for the SDK to become ready
-    // if (mraid) 
+    if (mraid) 
     {
         if (mraid.getState() === 'loading')
         {
@@ -1319,6 +1335,11 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     {
         startGame();
     }
+    
+    // window.onload = function()
+    // {
+    //     showMyAd();
+    // };
 
     // function openStoreURL()
     // {
