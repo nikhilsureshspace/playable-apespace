@@ -738,10 +738,16 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
         stage.update(event);
         
+        CheckOrientationChange();
+    }
+    
+    
+    function CheckOrientationChange()
+    {
         var oldWindowSizeX = windowSizeX;
         var oldWindowSizeY = windowSizeY;
         ResolveScreenSize();
-        
+
         if (oldWindowSizeX != windowSizeX || oldWindowSizeY != windowSizeY)
         {
             console.log("CHANGE IN WINDOW SIZE");
@@ -1249,6 +1255,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     // function viewableChangeCallback(e){
     //     if (e.isViewable) 
     //     {
+    //         CheckOrientationChange();
     //         ResumeGame();
     //     }
     //     else 
@@ -1299,10 +1306,15 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     
     function viewableChangeHandler(viewable) {
         // start/pause/resume gameplay, stop/play sounds
-        if(viewable) {
-            showMyAd();
-        } else {
-        // pause
+        if(viewable) 
+        {
+            CheckOrientationChange();
+            UnpauseGame();
+        } 
+        else 
+        {
+            // pause
+            PauseGame();
         }
     }
     
