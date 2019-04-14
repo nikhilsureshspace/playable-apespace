@@ -621,9 +621,9 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
     function Text()
     {
         ResolveScreenSize();
-        text = new createjs.Text(Math.floor(getWindowWidth()) + "x" + Math.floor(getWindowHeight()), sx(0.05) + "px alfa_slab_oneregular", "#999");
+        // text = new createjs.Text(Math.floor(getWindowWidth()) + "x" + Math.floor(getWindowHeight()), sx(0.05) + "px alfa_slab_oneregular", "#999");
         // text = new createjs.Text((windowSizeX) + " x \n" + (windowSizeY), sx(0.05) + "px alfa_slab_oneregular", "#999");
-        // text = new createjs.Text("", sx(0.05) + "px alfa_slab_oneregular", "#999");
+        text = new createjs.Text("", sx(0.05) + "px alfa_slab_oneregular", "#999");
         text.x = r(1);
         text.y = r(70);
 
