@@ -618,6 +618,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function Text()
     {
+        ResolveScreenSize();
         text = new createjs.Text(Math.floor(getWindowWidth()) + "x" + Math.floor(getWindowHeight()), sx(0.05) + "px alfa_slab_oneregular", "#999");
         // text = new createjs.Text((windowSizeX) + " x \n" + (windowSizeY), sx(0.05) + "px alfa_slab_oneregular", "#999");
         // text = new createjs.Text("", sx(0.05) + "px alfa_slab_oneregular", "#999");
@@ -1158,7 +1159,7 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         isLandscape = aspectRatio > 0.999;
 
         var portraitX = 960;
-        var portraitY = 540;
+        var portraitY = mraid ?  1000 : 540;
         var landscapeX = 1280;
         var landscapeY = 720;
         
@@ -1178,12 +1179,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function getWindowWidth()
     {
-        return mraid ? window.innerWidth : (dapi && dapi.isReady() ? dapi.getScreenSize().width : window.outerWidth);
+        return mraid ? window.outerWidth : (dapi && dapi.isReady() ? dapi.getScreenSize().width : window.outerWidth);
     }
 
     function getWindowHeight()
     {
-        return mraid ? window.innerHeight : (dapi && dapi.isReady() ? dapi.getScreenSize().height : window.outerHeight);
+        return mraid ? window.outerHeight : (dapi && dapi.isReady() ? dapi.getScreenSize().height : window.outerHeight);
     }
 
 
