@@ -1173,18 +1173,16 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         windowSizeX = (windowSizeX) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierLandscape, WINDOW_SCALE * multiplier);
         windowSizeY = (windowSizeY) * ValueLandscape(WINDOW_SCALE_LANDSCAPE * multiplierLandscapeY, WINDOW_SCALE * multiplierY);
 
-        // if (aspectRatio >= 0.7 && aspectRatio < 1.05)
-        // {
-        //     windowSizeY = windowSizeX;
-        //    
-        //     canvas.style.marginLeft = "12.5%";
-        //     canvas.style.width = "75%";
-        // }
-        // else
-        // {
-        //     canvas.style.marginLeft = "0px";
-        //     canvas.style.width = "100%";
-        // }
+        if (aspectRatio >= 0.7 && aspectRatio < 1.05)
+        {
+            canvas.style.marginLeft = "12.5%";
+            canvas.style.width = "75%";
+        }
+        else
+        {
+            canvas.style.marginLeft = "0px";
+            canvas.style.width = "100%";
+        }
     }
 
     function getWindowWidth()
