@@ -1377,14 +1377,14 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
         console.log("NO MRAID!");
         window.onload = function () 
         {
+            canvas = document.getElementById('demoCanvas');
+            
             if (dapi)
             {
                 console.log("DAPI!");
                 (dapi.isReady()) ? onReadyCallback() : dapi.addEventListener("ready", onReadyCallback);
             }
             else 
-            canvas = document.getElementById('demoCanvas');
-            
             {
                 console.log("NO MRAID OR DAPI!");
                 showMyAd();
