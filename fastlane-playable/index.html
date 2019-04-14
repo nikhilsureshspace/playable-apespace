@@ -1179,12 +1179,12 @@ this.createjs=this.createjs||{},createjs.extend=function(a,b){"use strict";funct
 
     function getWindowWidth()
     {
-        return mraid ? window.outerWidth : (dapi && dapi.isReady() ? dapi.getScreenSize().width : window.outerWidth);
+        return mraid ? window.innerWidth : (dapi && dapi.isReady() ? dapi.getScreenSize().width : window.outerWidth);
     }
 
     function getWindowHeight()
     {
-        return mraid ? window.outerHeight : (dapi && dapi.isReady() ? dapi.getScreenSize().height : window.outerHeight);
+        return mraid ? window.innerHeight : (dapi && dapi.isReady() ? dapi.getScreenSize().height : window.outerHeight);
     }
 
 
